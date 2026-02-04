@@ -1,9 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Search } from "lucide-react";
-import { Film } from "lucide-react";
-import { Moon } from "lucide-react";
-import { ChevronDown } from "lucide-react";
-import { ChevronRight } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,97 +6,108 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
   DropdownMenuShortcut,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
   InputGroup,
   InputGroupAddon,
-  InputGroupButton,
   InputGroupInput,
-  InputGroupText,
-  InputGroupTextarea,
 } from "@/components/ui/input-group";
+import { ChevronDown, ChevronRight, Film, Moon, Search } from "lucide-react";
+
+
+const genres = [
+  "Action",
+  "Adventure",
+  "Animation",
+  "Biography",
+  "Comedy",
+  "Crime",
+  "Documentary",
+  "Drama",
+  "Family",
+  "Fantasy",
+  "Film-Noir",
+  "Game-Show",
+  "History",
+  "Horror",
+  "Music",
+  "Musical",
+  "Mystery",
+  "News",
+  "Reality-TV",
+  "Romance",
+  "Sci-Fi",
+  "Short",
+  "Sport",
+  "Talk-Show",
+  "Thriller",
+  "War",
+  "Western",
+];
 
 export const Header = () => {
   return (
-    <div className="flex justify-between mt-2 h-[59px] items-center mx-4">
-      <div className="flex gap-4">
-        <Film className="text-indigo-700" />
-        <p className="text-indigo-700 italic font-semibold">Movie Z</p>
-      </div>
-      <div className="lg:gap-2 hidden lg:block lg:flex ">
-        <div>
+    <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur dark:bg-black/60">
+      <div className="mx-auto flex h-[59px] max-w-7xl items-center justify-between px-4 sm:px-6">
+        {/* Left */}
+        <div className="flex items-center gap-3">
+          <Film className="text-indigo-700" />
+          <p className="text-indigo-700 italic font-semibold">Movie Z</p>
+        </div>
+
+        {/* Middle (desktop only) */}
+        <div className="hidden items-center gap-3 lg:flex">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline">
-                <ChevronDown />
+              <Button variant="outline" className="gap-2">
+                <ChevronDown className="h-4 w-4" />
                 Genre
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuGroup>
-                <DropdownMenuLabel>
-                  See lists of movies by genre
-                </DropdownMenuLabel>
-              </DropdownMenuGroup>
-              <DropdownMenuSeparator />
 
-              <DropdownMenuItem>
-                Action
-                <DropdownMenuShortcut>
-                  <ChevronRight />
-                </DropdownMenuShortcut>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                Adventure
-                <DropdownMenuShortcut>
-                  <ChevronRight />
-                </DropdownMenuShortcut>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                Animation
-                <DropdownMenuShortcut>
-                  <ChevronRight />
-                </DropdownMenuShortcut>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                Biography
-                <DropdownMenuShortcut>
-                  <ChevronRight />
-                </DropdownMenuShortcut>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                Comedy
-                <DropdownMenuShortcut>
-                  <ChevronRight />
-                </DropdownMenuShortcut>
-              </DropdownMenuItem>
+            <DropdownMenuContent align="start" className="w-56">
+              <DropdownMenuGroup>
+                <DropdownMenuLabel className="space-y-1">
+                  <p className="font-semibold">Genres</p>
+                  <p className="text-sm text-black/30">
+                    See lists of movies by genre
+                  </p>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator/>
+              </DropdownMenuGroup>
+              <div className="grid grid-cols-2 gap-2">
+                {genres.map((genre) => (
+                  <DropdownMenuItem key={genre}>
+                    {genre}
+                    <DropdownMenuShortcut>
+                      <ChevronRight className="h-4 w-4" />
+                    </DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                ))}
+              </div>
             </DropdownMenuContent>
           </DropdownMenu>
-        </div>
-        <div>
-          <InputGroup className="max-w-xs">
+
+          <InputGroup className="w-[320px]">
             <InputGroupInput placeholder="Search..." />
             <InputGroupAddon>
-              <Search />
+              <Search className="h-4 w-4" />
             </InputGroupAddon>
-            <InputGroupAddon align="inline-end"></InputGroupAddon>
           </InputGroup>
         </div>
-      </div>
 
-      <div className="flex gap-2">
-        <div className="lg:hidden">
+        <div className="flex items-center gap-2">
+          <Button size="icon" variant="outline" className="lg:hidden">
+            <Search className="h-4 w-4" />
+          </Button>
+
           <Button size="icon" variant="outline">
-            <Search />
+            <Moon className="h-4 w-4" />
           </Button>
         </div>
-
-        <Button size="icon" variant="outline">
-          <Moon />
-        </Button>
       </div>
-    </div>
+    </header>
   );
 };

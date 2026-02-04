@@ -41,8 +41,9 @@ export default function Home() {
       <Upcoming />
       <TopRated />
       <Popular />
-
-      <Footer />
+      <div className="mt-30">
+        <Footer />
+      </div>
     </div>
   );
 }
