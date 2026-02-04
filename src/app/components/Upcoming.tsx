@@ -2,11 +2,11 @@ import { MovieCard } from "./MovieCard";
 import { movies } from "./Movielist";
 import { MoveRight } from "lucide-react";
 
-export const Popular = () => {
+export const Upcoming = () => {
   return (
     <div className="mx-auto mt-10 max-w-7xl px-6 ">
       <div className="flex justify-between mb-4 mx-8">
-        <p className="font-semibold">Popular</p>
+        <p className="font-semibold">Upcoming</p>
         <div className="flex gap-2 items-center">
           <button>See more</button>
           <MoveRight size={10} />
