@@ -2,6 +2,8 @@ import { Header } from "./components/Header";
 import { MovieHero } from "./components/MovieHero";
 import { MovieCard } from "./components/MovieCard";
 import { movies } from "./components/Movielist";
+import { MoveRight } from "lucide-react";
+import { Footer } from "./components/Footer";
 import {
   Carousel,
   CarouselContent,
@@ -34,6 +36,13 @@ export default function Home() {
       </Carousel>
 
       <div className="mx-auto mt-10 max-w-7xl px-6 ">
+        <div className="flex justify-between mb-4 mx-8">
+          <p className="font-semibold">Upcoming</p>
+          <div className="flex gap-2 items-center">
+            <button>See more</button>
+            <MoveRight size={10} />
+          </div>
+        </div>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-5 place-items-center">
           {movies.map((movie) => (
             <MovieCard
@@ -45,6 +54,47 @@ export default function Home() {
           ))}
         </div>
       </div>
+
+      <div className="mx-auto mt-10 max-w-7xl px-6 ">
+        <div className="flex justify-between mb-4 mx-8">
+          <p className="font-semibold">Top Rated</p>
+          <div className="flex gap-2 items-center">
+            <button>See more</button>
+            <MoveRight size={10} />
+          </div>
+        </div>
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-5 place-items-center">
+          {movies.map((movie) => (
+            <MovieCard
+              key={movie.id}
+              img={movie.img}
+              rating={movie.rating}
+              name={movie.name}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="mx-auto mt-10 max-w-7xl px-6 ">
+        <div className="flex justify-between mb-4 mx-8">
+          <p className="font-semibold">Popular</p>
+          <div className="flex gap-2 items-center">
+            <button>See more</button>
+            <MoveRight size={10} />
+          </div>
+        </div>
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-5 place-items-center">
+          {movies.map((movie) => (
+            <MovieCard
+              key={movie.id}
+              img={movie.img}
+              rating={movie.rating}
+              name={movie.name}
+            />
+          ))}
+        </div>
+      </div>
+      <Footer />
     </div>
   );
 }
