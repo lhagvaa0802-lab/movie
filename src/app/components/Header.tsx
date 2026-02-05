@@ -14,8 +14,9 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group";
-import { ChevronDown, ChevronRight, Film, Moon, Search } from "lucide-react";
-
+import { ChevronDown, ChevronRight, Film, Search } from "lucide-react";
+import { ModeToggle } from "./ModeToggle";
+import { X } from "lucide-react";
 
 const genres = [
   "Action",
@@ -75,7 +76,7 @@ export const Header = () => {
                     See lists of movies by genre
                   </p>
                 </DropdownMenuLabel>
-                <DropdownMenuSeparator/>
+                <DropdownMenuSeparator />
               </DropdownMenuGroup>
               <div className="grid grid-cols-2 gap-2">
                 {genres.map((genre) => (
@@ -103,9 +104,8 @@ export const Header = () => {
             <Search className="h-4 w-4" />
           </Button>
 
-          <Button size="icon" variant="outline">
-            <Moon className="h-4 w-4" />
-          </Button>
+          <ModeToggle />
+          <X />
         </div>
       </div>
     </header>

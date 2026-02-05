@@ -1,12 +1,11 @@
 import { Header } from "./components/Header";
 import { MovieHero } from "./components/MovieHero";
-
 import { movies } from "./components/Movielist";
-
 import { Footer } from "./components/Footer";
 import { Popular } from "./components/Popular";
 import { TopRated } from "./components/TopRated";
 import { Upcoming } from "./components/Upcoming";
+
 import {
   Carousel,
   CarouselContent,
@@ -41,9 +40,8 @@ export default function Home() {
       <Upcoming />
       <TopRated />
       <Popular />
-      <div className="mt-30">
-        <Footer />
-      </div>
+
+      <Footer />
     </div>
   );
 }
