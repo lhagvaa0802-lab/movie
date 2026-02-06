@@ -37,11 +37,9 @@ export default function Home() {
         <CarouselNext className="absolute right-6 top-1/3  sm:right-4 sm:top-1/3 lg:right-6 lg:top-1/2 -translate-y-1/3 z-10" />
       </Carousel>
 
-      <Upcoming />
-      <TopRated />
-      <Popular />
-
-      <Footer />
+      <Upcoming className="visible" />
+      <TopRated className="visible" />
+      <Popular className="visible" />
     </div>
   );
 }
