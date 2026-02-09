@@ -30,10 +30,6 @@ export function MovieHero(props: MovieHeroProps) {
               </div>
             </div>
 
-
-
-            
-
             <p className="hidden lg:block text-sm text-white">Now Playing</p>
 
             <h1 className="mt-2 text-2xl font-bold text-zinc-900 dark:text-white lg:mt-3 lg:text-5xl lg:text-white">
@@ -51,8 +47,13 @@ export function MovieHero(props: MovieHeroProps) {
               {description}
             </p>
 
-            <button className="mt-5 inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-black hover:bg-zinc-800 dark:bg-white dark:text-black lg:mt-7">
-              <Play className="h-4 w-4" fill="white " />
+            <button className="mt-5 inline-flex items-center gap-2 rounded-xl bg-black px-5 py-3 text-sm font-semibold text-white lg:mt-7 lg:bg-white lg:text-black">
+              <div className="block lg:hidden">
+                <Play className="h-4 w-4 " fill="black" />
+              </div>
+              <div className="hidden lg:block">
+                <Play className="h-4 w-4" fill="white" />
+              </div>
               Watch Trailer
             </button>
           </div>

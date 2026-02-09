@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -14,9 +17,8 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group";
-import { ChevronDown, ChevronRight, Film, Search } from "lucide-react";
+import { ChevronDown, ChevronRight, Film, Search, X } from "lucide-react";
 import { ModeToggle } from "./ModeToggle";
-import { X } from "lucide-react";
 
 const genres = [
   "Action",
@@ -49,65 +51,149 @@ const genres = [
 ];
 
 export const Header = () => {
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+
+
   return (
-    <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur dark:bg-black/60">
-      <div className="mx-auto flex h-[59px] max-w-7xl items-center justify-between px-4 sm:px-6">
-        {/* Left */}
-        <div className="flex items-center gap-3">
-          <Film className="text-indigo-700" />
-          <p className="text-indigo-700 italic font-semibold">Movie Z</p>
-        </div>
+    <div className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur dark:border-zinc-800 dark:bg-black/60">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="flex h-[59px] items-center justify-between">
+          <div
+            className={`flex items-center gap-3 ${mobileSearchOpen ? "hidden lg:flex" : ""}`}
+          >
+            <Film className="text-indigo-700" />
+            <p className="text-indigo-700 italic font-semibold">Movie Z</p>
+          </div>
 
-        {/* Middle (desktop only) */}
-        <div className="hidden items-center gap-3 lg:flex">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="gap-2">
-                <ChevronDown className="h-4 w-4" />
-                Genre
-              </Button>
-            </DropdownMenuTrigger>
+          <div className="hidden items-center gap-3 lg:flex">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="gap-2">
+                  <ChevronDown className="h-4 w-4" />
+                  Genre
+                </Button>
+              </DropdownMenuTrigger>
 
-            <DropdownMenuContent align="start" className="w-56">
-              <DropdownMenuGroup>
-                <DropdownMenuLabel className="space-y-1">
-                  <p className="font-semibold">Genres</p>
-                  <p className="text-sm text-black/30">
-                    See lists of movies by genre
-                  </p>
-                </DropdownMenuLabel>
+              <DropdownMenuContent align="start" className="w-80 p-2">
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel className="space-y-1">
+                    <p className="font-semibold">Genres</p>
+                    <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                      See lists of movies by genre
+                    </p>
+                  </DropdownMenuLabel>
+                </DropdownMenuGroup>
+
                 <DropdownMenuSeparator />
-              </DropdownMenuGroup>
-              <div className="grid grid-cols-2 gap-2">
-                {genres.map((genre) => (
-                  <DropdownMenuItem key={genre}>
-                    {genre}
-                    <DropdownMenuShortcut>
-                      <ChevronRight className="h-4 w-4" />
-                    </DropdownMenuShortcut>
-                  </DropdownMenuItem>
-                ))}
-              </div>
-            </DropdownMenuContent>
-          </DropdownMenu>
 
-          <InputGroup className="w-[320px]">
-            <InputGroupInput placeholder="Search..." />
-            <InputGroupAddon>
+                <div className="grid grid-cols-2 gap-2 p-2">
+                  {genres.map((genre) => (
+                    <DropdownMenuItem
+                      key={genre}
+                      className="flex justify-between"
+                    >
+                      {genre}
+                      <DropdownMenuShortcut>
+                        <ChevronRight className="h-4 w-4" />
+                      </DropdownMenuShortcut>
+                    </DropdownMenuItem>
+                  ))}
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            {/* Desktop search */}
+            <InputGroup className="w-[320px]">
+              <InputGroupInput placeholder="Search..." />
+              <InputGroupAddon>
+                <Search className="h-4 w-4" />
+              </InputGroupAddon>
+            </InputGroup>
+          </div>
+
+          {/* Right */}
+          <div
+            className={`flex items-center gap-2 ${mobileSearchOpen ? "hidden lg:flex" : ""}`}
+          >
+            {/* Mobile search open */}
+            <Button
+              size="icon"
+              variant="outline"
+              className="lg:hidden"
+              onClick={() => setMobileSearchOpen(true)}
+              aria-label="Open search"
+            >
               <Search className="h-4 w-4" />
-            </InputGroupAddon>
-          </InputGroup>
+            </Button>
+
+            <ModeToggle />
+          </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Button size="icon" variant="outline" className="lg:hidden">
-            <Search className="h-4 w-4" />
-          </Button>
+        {/* MOBILE SEARCH MODE PANEL */}
 
-          <ModeToggle />
-          <X />
-        </div>
+        {mobileSearchOpen && (
+          <div className="pb-3 lg:hidden">
+            <div className="flex items-center gap-2">
+              {/* Genre dropdown button */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    className="bg-white text-zinc-900 dark:bg-zinc-900 dark:text-white"
+                    aria-label="Open genres"
+                  >
+                    <ChevronDown className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+
+                <DropdownMenuContent align="start" className="w-[320px] p-2">
+                  <DropdownMenuLabel className="space-y-1">
+                    <p className="font-semibold">Genres</p>
+                    <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                      See lists of movies by genre
+                    </p>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+
+                  <div className="grid grid-cols-2 gap-2 p-2">
+                    {genres.map((genre) => (
+                      <DropdownMenuItem
+                        key={genre}
+                       
+                        className="flex justify-between"
+                      >
+                        {genre}
+                        <DropdownMenuShortcut>
+                          <ChevronRight className="h-4 w-4" />
+                        </DropdownMenuShortcut>
+                      </DropdownMenuItem>
+                    ))}
+                  </div>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              {/* Search input */}
+              <InputGroup className="flex-1">
+                <InputGroupInput placeholder="Search..." />
+                <InputGroupAddon className=" dark:text-zinc-300">
+                  <Search className="h-4 w-4" />
+                </InputGroupAddon>
+              </InputGroup>
+
+              {/* Close */}
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={() => setMobileSearchOpen(false)}
+                aria-label="Close search"
+              >
+                <X className="h-5 w-5" />
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
-    </header>
+    </div>
   );
 };
