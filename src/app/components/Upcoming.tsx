@@ -2,12 +2,35 @@ import { MovieCard } from "./MovieCard";
 import { movies } from "./Movielist";
 
 import { SeeMore } from "./SeeMore";
+import { getUpcomingMovies } from "@/lib/apiUpcomig";
 
 type UpcomingProps = {
   className: string;
 };
+type PopularMoviesDataType = {
+  adult: boolean;
+  backdrop_path: string;
 
-export const Upcoming = ({ className }: UpcomingProps) => {
+  genre_ids: string[];
+  id: number;
+  original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  release_date: string;
+  title: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
+};
+
+type FetchMovieDataType = {
+  page: string;
+  results: PopularMoviesDataType[];
+  total_pages: number;
+};
+export const Upcoming = async ({ className }: UpcomingProps) => {
+  const upcomingMoviesData: FetchMovieDataType = await getUpcomingMovies();
   return (
     <div className="mx-auto mt-10 max-w-7xl px-6 ">
       <div className="flex justify-between items-center mb-4 mx-8">
@@ -16,12 +39,12 @@ export const Upcoming = ({ className }: UpcomingProps) => {
         <SeeMore url="/upcoming" className={className} />
       </div>
       <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-5 place-items-center mt-10">
-        {movies.map((movie) => (
+        {upcomingMoviesData.results.map((movie) => (
           <MovieCard
             key={movie.id}
-            img={movie.img}
-            rating={movie.rating}
-            name={movie.name}
+            imgPath={movie.poster_path}
+            rating={movie.vote_average}
+            name={movie.original_title}
           />
         ))}
       </div>

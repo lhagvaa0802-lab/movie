@@ -1,4 +1,3 @@
-import { movies } from "./Movielist";
 import { MovieHero } from "./MovieHero";
 import {
   Carousel,
@@ -7,19 +6,44 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { getPopularMovies } from "@/lib/apiPopular";
+type PopularMoviesDataType = {
+  adult: boolean;
+  backdrop_path: string;
 
-export const CarouselHero = () => {
+  genre_ids: string[];
+  id: number;
+  original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  release_date: string;
+  title: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
+};
+
+type FetchMovieDataType = {
+  page: string;
+  results: PopularMoviesDataType[];
+  total_pages: number;
+};
+export const CarouselHero = async () => {
+  const popularMoviesData: FetchMovieDataType = await getPopularMovies();
   return (
     <div>
       <Carousel className="relative w-full">
         <CarouselContent>
-          {movies.map((movie) => (
+          {popularMoviesData.results.map((movie) => (
             <CarouselItem key={movie.id}>
               <MovieHero
-                name={movie.name}
-                rating={movie.rating}
-                description={movie.description}
-                img={movie.img}
+                key={movie.id}
+                imgPath={movie.backdrop_path}
+                rating={movie.vote_average}
+                name={movie.original_title}
+                img={movie.backdrop_path}
+                description={movie.overview}
               />
             </CarouselItem>
           ))}

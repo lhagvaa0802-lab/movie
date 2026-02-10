@@ -3,18 +3,22 @@ import { Star } from "lucide-react";
 import Image from "next/image";
 
 type MovieCardProps = {
-  img: string;
+  imgPath: string;
   rating: number;
   name: string;
 };
-
+const baseImgUrl = "https://image.tmdb.org/t/p/w500";
 export const MovieCard = (props: MovieCardProps) => {
-  const { img, rating, name } = props;
+  const { imgPath, rating, name } = props;
+  console.log(imgPath);
   return (
     <Card className="w-[160px] bg-gray-200 text-black overflow-hidden p-0 gap-1">
-      <div className="relative h-[233px] w-full">
-        <Image src={img} alt={name} fill className="object-cover" />
-      </div>
+      <div
+        style={{
+          backgroundImage: `url(${`${baseImgUrl + imgPath}`})`,
+        }}
+        className="relative h-[233px] bg-cover"
+      ></div>
 
       <CardFooter className="flex flex-col items-start gap-1 ml-0 px-2">
         <div className="flex items-center gap-1 text-yellow-400">
@@ -23,7 +27,7 @@ export const MovieCard = (props: MovieCardProps) => {
             {rating} <span className=" text-gray-400">/10</span>
           </span>
         </div>
-        <p className="text-sm font-medium line-clamp-2">{name}</p>
+        <p className="text-sm font-medium line-clamp-2 h-10">{name}</p>
       </CardFooter>
     </Card>
   );

@@ -1,22 +1,27 @@
 import Image from "next/image";
 import { Star, Play } from "lucide-react";
-
+import { getPopularMovies } from "@/lib/apiPopular";
 
 type MovieHeroProps = {
   img: string;
   rating: number;
   name: string;
-  description:string
+  description: string;
+  imgPath: string;
 };
-
+const baseImgUrl = "https://image.tmdb.org/t/p/original";
 export function MovieHero(props: MovieHeroProps) {
-  const { img, rating, name, description } = props;
+  const { img, rating, name, description, imgPath } = props;
   return (
     <div className="w-full ">
       <div className="relative overflow-hidden  dark:bg-zinc-950 lg:bg-transparent">
         {/* IMAGE */}
-        <div className="relative h-[220px] sm:h-[320px] lg:h-[520px] xl:h-[600px]">
-          <Image src={img} alt={name} fill className="object-cover" />
+        <div
+          className="relative h-[220px] sm:h-[320px] lg:h-[520px] xl:h-[600px] bg-cover "
+          style={{
+            backgroundImage: `url(${`${baseImgUrl + imgPath}`})`,
+          }}
+        >
           <div className="hidden lg:absolute lg:inset-0 lg:block lg:bg-lineiar-to-r lg:from-black/85 lg:via-black/55 lg:to-black/10" />
         </div>
 
