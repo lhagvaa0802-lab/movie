@@ -1,33 +1,15 @@
 import { MovieCard } from "./MovieCard";
 import Link from "next/link";
 import { SeeMore } from "./SeeMore";
-import { getPopularMovies } from "@/lib/apiPopular";
+import { getPopularMovies } from "@/lib/apiPages"; 
+
+import { FetchMovieDataType } from "../../lib/types";
 
 type PopularProps = {
   className: string;
 };
-type PopularMoviesDataType = {
-  adult: boolean;
-  backdrop_path: string;
 
-  genre_ids: string[];
-  id: number;
-  original_title: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
-  release_date: string;
-  title: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
-};
 
-type FetchMovieDataType = {
-  page: string;
-  results: PopularMoviesDataType[];
-  total_pages: number;
-};
 
 export const Popular = async ({ className }: PopularProps) => {
   const popularMoviesData: FetchMovieDataType = await getPopularMovies();

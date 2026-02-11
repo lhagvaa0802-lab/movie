@@ -2,33 +2,12 @@ import { MovieCard } from "./MovieCard";
 
 import Link from "next/link";
 import { SeeMore } from "./SeeMore";
-import { getUpcomingMovies } from "@/lib/apiUpcomig";
-
+import { getUpcomingMovies } from "@/lib/apiPages"; 
+import { FetchMovieDataType } from "../../lib/types";
 type UpcomingProps = {
   className: string;
 };
-type PopularMoviesDataType = {
-  adult: boolean;
-  backdrop_path: string;
 
-  genre_ids: string[];
-  id: number;
-  original_title: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
-  release_date: string;
-  title: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
-};
-
-type FetchMovieDataType = {
-  page: string;
-  results: PopularMoviesDataType[];
-  total_pages: number;
-};
 export const Upcoming = async ({ className }: UpcomingProps) => {
   const upcomingMoviesData: FetchMovieDataType = await getUpcomingMovies();
   return (

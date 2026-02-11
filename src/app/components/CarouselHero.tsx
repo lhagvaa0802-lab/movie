@@ -6,7 +6,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { getPopularMovies } from "@/lib/apiPopular";
+import { getPopularMovies } from "@/lib/apiPages";
+
+
 type PopularMoviesDataType = {
   adult: boolean;
   backdrop_path: string;
