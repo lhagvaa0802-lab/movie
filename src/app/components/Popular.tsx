@@ -1,5 +1,5 @@
 import { MovieCard } from "./MovieCard";
-import { movies } from "./Movielist";
+import Link from "next/link";
 import { SeeMore } from "./SeeMore";
 import { getPopularMovies } from "@/lib/apiPopular";
 
@@ -41,12 +41,13 @@ export const Popular = async ({ className }: PopularProps) => {
       </div>
       <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-5 place-items-center mt-10">
         {popularMoviesData.results.map((movie) => (
-          <MovieCard
-            key={movie.id}
-            imgPath={movie.poster_path}
-            rating={movie.vote_average}
-            name={movie.original_title}
-          />
+          <Link href={`/${movie.id}`} key={movie.id}>
+            <MovieCard
+              imgPath={movie.poster_path}
+              rating={movie.vote_average}
+              name={movie.original_title}
+            />
+          </Link>
         ))}
       </div>
     </div>

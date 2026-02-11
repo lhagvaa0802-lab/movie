@@ -1,7 +1,6 @@
+import Link from "next/link";
 import { MovieCard } from "./MovieCard";
 
-import { MoveRight } from "lucide-react";
-import { movies } from "./Movielist";
 import { SeeMore } from "./SeeMore";
 import { getTopRatedMovies } from "@/lib/apiTopRated";
 
@@ -42,12 +41,13 @@ export const TopRated = async ({ className }: TopRatedProps) => {
       </div>
       <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-5 place-items-center mt-10">
         {topRatedMoviesData.results.map((movie) => (
-          <MovieCard
-            key={movie.id}
-            imgPath={movie.poster_path}
-            rating={movie.vote_average}
-            name={movie.original_title}
-          />
+          <Link href={`/${movie.id}`} key={movie.id}>
+            <MovieCard
+              imgPath={movie.poster_path}
+              rating={movie.vote_average}
+              name={movie.original_title}
+            />
+          </Link>
         ))}
       </div>
     </div>

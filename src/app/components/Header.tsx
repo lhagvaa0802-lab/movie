@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/input-group";
 import { ChevronDown, ChevronRight, Film, Search, X } from "lucide-react";
 import { ModeToggle } from "./ModeToggle";
+import { Badge } from "@/components/ui/badge";
 
 const genres = [
   "Action",
@@ -53,7 +54,6 @@ const genres = [
 export const Header = () => {
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 
-
   return (
     <div className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur dark:border-zinc-800 dark:bg-black/60">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -75,28 +75,19 @@ export const Header = () => {
               </DropdownMenuTrigger>
 
               <DropdownMenuContent align="start" className="w-80 p-2">
-                <DropdownMenuGroup>
-                  <DropdownMenuLabel className="space-y-1">
-                    <p className="font-semibold">Genres</p>
-                    <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                      See lists of movies by genre
-                    </p>
-                  </DropdownMenuLabel>
-                </DropdownMenuGroup>
+                <DropdownMenuLabel className="space-y-1">
+                  <p className="font-semibold">Genres</p>
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                    See lists of movies by genre
+                  </p>
+                </DropdownMenuLabel>
 
                 <DropdownMenuSeparator />
-
-                <div className="grid grid-cols-2 gap-2 p-2">
+                <div className="grid grid-cols-2 gap-2 mt-5">
                   {genres.map((genre) => (
-                    <DropdownMenuItem
-                      key={genre}
-                      className="flex justify-between"
-                    >
-                      {genre}
-                      <DropdownMenuShortcut>
-                        <ChevronRight className="h-4 w-4" />
-                      </DropdownMenuShortcut>
-                    </DropdownMenuItem>
+                    <Badge key={genre} variant="outline">
+                      {genre} {<ChevronRight />}
+                    </Badge>
                   ))}
                 </div>
               </DropdownMenuContent>
@@ -156,18 +147,11 @@ export const Header = () => {
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
 
-                  <div className="grid grid-cols-2 gap-2 p-2">
+                  <div className="grid grid-cols-2 gap-2 mt-5">
                     {genres.map((genre) => (
-                      <DropdownMenuItem
-                        key={genre}
-                       
-                        className="flex justify-between"
-                      >
-                        {genre}
-                        <DropdownMenuShortcut>
-                          <ChevronRight className="h-4 w-4" />
-                        </DropdownMenuShortcut>
-                      </DropdownMenuItem>
+                      <Badge key={genre} variant="outline">
+                        {genre} {<ChevronRight />}
+                      </Badge>
                     ))}
                   </div>
                 </DropdownMenuContent>
