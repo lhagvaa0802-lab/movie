@@ -21,7 +21,7 @@ import { ChevronDown, ChevronRight, Film, Search, X } from "lucide-react";
 import { ModeToggle } from "./ModeToggle";
 import { Badge } from "@/components/ui/badge";
 
-const genres = [
+export const genres = [
   "Action",
   "Adventure",
   "Animation",
