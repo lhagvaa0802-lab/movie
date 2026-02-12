@@ -1,6 +1,5 @@
 import { MovieDetails } from "@/lib/types";
-const token =
-  "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1MThkODk5NDdiODJjMzJmMGJmMTM2ZTdlN2NkYzg1NyIsIm5iZiI6MTc3MDYwODMyMC4yNjEsInN1YiI6IjY5ODk1NmMwZGRhMDQ2OWVhZCJdLCJ2ZXJzaW9uIjoxfQ.JmBMnwPwo4W58j6BY3FNxYKbUgfB3eKPXvW9D2XdU1s";
+const token = process.env.TMDB_ACCESS_TOKEN;
 const option = {
   method: "GET",
   headers: {

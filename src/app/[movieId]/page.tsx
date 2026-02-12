@@ -21,7 +21,9 @@ const Details = async ({ params, className }: Detailspageprops) => {
   const credits = await getCreditsMovies(movieId);
   const similarMovieData = await getSimilarMovie(movieId);
 
-  const { cast, crew } = credits;
+  const cast = credits?.cast ?? [];
+  const crew = credits?.crew ?? [];
+
   console.log(similarMovieData);
 
   const directors = crew
@@ -171,7 +173,7 @@ const Details = async ({ params, className }: Detailspageprops) => {
           <div className="flex justify-between items-center mb-4 mx-8">
             <p className="font-semibold">More like this</p>
 
-            <SeeMore url="/similar" className={className} />
+            <SeeMore url={`/${movieId}/similar`} className={className} />
           </div>
           <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-5 place-items-center mt-10">
             {similarMovieData.results?.slice(0, 5).map((movie) => (

@@ -1,7 +1,6 @@
 import { MovieCredits } from "./types";
 import { SimilarMovie } from "./types";
-const token =
-  "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1Yzg1NyIsIm5iZiI6MTc3MDYwODMyMC4yNjEsInN1YiI6IjY5ODk1NmMwZGRhMDQ2OWIwODVjYWViZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.JmBMnwPwo4W58j6BY3FNxYKbUgfB3eKPXvW9D2XdU1s";
+const token = process.env.TMDB_ACCESS_TOKEN;
 const option = {
   method: "GET",
   headers: {
@@ -22,11 +21,20 @@ export const getCreditsMovies = async (
 
 
 
-export const getSimilarMovie = async (movieId: string): Promise<SimilarMovie> => {
-  const response = await fetch(
-    `https://api.themoviedb.org/3/movie/${movieId}/similar`,
-    option,
-  );
-  const data = await response.json();
+export const getSimilarMovie = async (movieId: string) => {
+  if (!movieId) throw new Error("movieId missing");
+
+  const url = `https://api.themoviedb.org/3/movie/${movieId}/similar?language=en-US&page=1`;
+  const res = await fetch(url, option);
+
+  const data = await res.json();
+
+  console.log("TMDB similar status:", res.status);
+  if (!res.ok) {
+    console.log("TMDB similar error body:", data);
+    throw new Error(data?.status_message ?? "TMDB similar request failed");
+  }
+
   return data;
 };
+
