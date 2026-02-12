@@ -15,6 +15,21 @@ const Details = async ({ params }: Detailspageprops) => {
   const movie = await getDetailsMovies(movieId);
   const credits = await getCreditsMovies(movieId);
 
+  const { cast, crew } = credits;
+  console.log(credits);
+
+  const directors = crew
+    .filter((person) => person.job === "Director")
+    .map((d) => d.name);
+
+  const writers = crew
+    .filter((person) => person.department === "Writing")
+    .map((d) => d.name)
+    .slice(0, 3)
+    .join(" • ");
+
+  console.log(writers);
+
   return (
     <div className="min-h-screen bg-white">
       <div className="mx-auto max-w-5xl px-4 sm:px-6 py-6 sm:py-8">
@@ -118,7 +133,9 @@ const Details = async ({ params }: Detailspageprops) => {
               Director
             </span>
             <div className="flex flex-wrap gap-2 text-zinc-900">
-              <span className="hover:underline cursor-pointer">{credits.}</span>
+              <span className="hover:underline cursor-pointer">
+                {directors}
+              </span>
             </div>
           </div>
 
@@ -127,15 +144,7 @@ const Details = async ({ params }: Detailspageprops) => {
               Writers
             </span>
             <div className="flex flex-wrap items-center gap-x-2 text-zinc-900">
-              <span className="hover:underline cursor-pointer">
-                Winnie Holzman
-              </span>
-              <span className="text-zinc-300 text-xs">•</span>
-              <span className="hover:underline cursor-pointer">Dana Fox</span>
-              <span className="text-zinc-300 text-xs">•</span>
-              <span className="hover:underline cursor-pointer">
-                Gregory Maguire
-              </span>
+              <span className="hover:underline cursor-pointer">{writers}</span>
             </div>
           </div>
 
