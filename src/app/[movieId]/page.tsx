@@ -1,6 +1,7 @@
 import { getDetailsMovies } from "@/lib/apiDetails";
 import { Play } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { getCreditsMovies } from "@/lib/apiCredit";
 
 type Detailspageprops = {
   params: Promise<{ movieId: string }>;
@@ -12,6 +13,7 @@ const Details = async ({ params }: Detailspageprops) => {
   const { movieId } = await params;
 
   const movie = await getDetailsMovies(movieId);
+  const credits = await getCreditsMovies(movieId);
 
   return (
     <div className="min-h-screen bg-white">
@@ -116,7 +118,7 @@ const Details = async ({ params }: Detailspageprops) => {
               Director
             </span>
             <div className="flex flex-wrap gap-2 text-zinc-900">
-              <span className="hover:underline cursor-pointer">Jon M. Chu</span>
+              <span className="hover:underline cursor-pointer">{credits.}</span>
             </div>
           </div>
 

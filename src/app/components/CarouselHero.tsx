@@ -7,30 +7,8 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { getPopularMovies } from "@/lib/apiPages";
+import { FetchMovieDataType } from "@/lib/types";
 
-
-type PopularMoviesDataType = {
-  adult: boolean;
-  backdrop_path: string;
-
-  genre_ids: string[];
-  id: number;
-  original_title: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
-  release_date: string;
-  title: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
-};
-
-type FetchMovieDataType = {
-  page: string;
-  results: PopularMoviesDataType[];
-  total_pages: number;
-};
 export const CarouselHero = async () => {
   const popularMoviesData: FetchMovieDataType = await getPopularMovies();
   return (
