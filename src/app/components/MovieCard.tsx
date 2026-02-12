@@ -9,7 +9,7 @@ type MovieCardProps = {
 };
 const baseImgUrl = "https://image.tmdb.org/t/p/w500";
 export const MovieCard = (props: MovieCardProps) => {
-  const { imgPath, rating, name } = props;
+  const { imgPath, rating, name} = props;
   console.log(imgPath);
   return (
     <Card className="w-[160px] bg-gray-200 text-black overflow-hidden p-0 gap-1">

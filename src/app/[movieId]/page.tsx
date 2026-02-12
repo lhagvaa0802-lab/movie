@@ -2,21 +2,27 @@ import { getDetailsMovies } from "@/lib/apiDetails";
 import { Play } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { getCreditsMovies } from "@/lib/apiCredit";
-
+import { getSimilarMovie } from "@/lib/apiCredit";
+import Link from "next/link";
+import { MovieCard } from "../components/MovieCard";
+import { SeeMore } from "../components/SeeMore";
 type Detailspageprops = {
+  className: string;
   params: Promise<{ movieId: string }>;
 };
 
+
 const baseImgUrl = "https://image.tmdb.org/t/p/w500";
 
-const Details = async ({ params }: Detailspageprops) => {
+const Details = async ({ params, className }: Detailspageprops) => {
   const { movieId } = await params;
 
   const movie = await getDetailsMovies(movieId);
   const credits = await getCreditsMovies(movieId);
+  const similarMovieData = await getSimilarMovie(movieId);
 
   const { cast, crew } = credits;
-  console.log(credits);
+  console.log(similarMovieData);
 
   const directors = crew
     .filter((person) => person.job === "Director")
@@ -25,6 +31,11 @@ const Details = async ({ params }: Detailspageprops) => {
   const writers = crew
     .filter((person) => person.department === "Writing")
     .map((d) => d.name)
+    .slice(0, 3)
+    .join(" • ");
+
+  const stars = cast
+    .map((person) => person.name)
     .slice(0, 3)
     .join(" • ");
 
@@ -151,18 +162,27 @@ const Details = async ({ params }: Detailspageprops) => {
           <div className="flex py-4 gap-8">
             <span className="w-20 font-bold text-zinc-900 shrink-0">Stars</span>
             <div className="flex flex-wrap items-center gap-x-2 text-zinc-900">
-              <span className="hover:underline cursor-pointer">
-                Cynthia Erivo
-              </span>
-              <span className="text-zinc-300 text-xs">•</span>
-              <span className="hover:underline cursor-pointer">
-                Ariana Grande
-              </span>
-              <span className="text-zinc-300 text-xs">•</span>
-              <span className="hover:underline cursor-pointer">
-                Jeff Goldblum
-              </span>
+              <span className="hover:underline cursor-pointer">{stars}</span>
             </div>
+          </div>
+        </div>
+
+        <div className="mx-auto mt-10 max-w-7xl px-6 ">
+          <div className="flex justify-between items-center mb-4 mx-8">
+            <p className="font-semibold">More like this</p>
+
+            <SeeMore url="/similar" className={className} />
+          </div>
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-5 place-items-center mt-10">
+            {similarMovieData.results?.slice(0, 5).map((movie) => (
+              <Link href={`/${movie.id}`} key={movie.id}>
+                <MovieCard
+                  imgPath={movie.poster_path}
+                  rating={movie.vote_average}
+                  name={movie.original_title}
+                />
+              </Link>
+            ))}
           </div>
         </div>
       </div>
