@@ -1,5 +1,5 @@
 "use client";
-
+import { SeachInput } from "./searchMovie";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -93,12 +93,8 @@ export const Header = () => {
               </DropdownMenuContent>
             </DropdownMenu>
             {/* Desktop search */}
-            <InputGroup className="w-[320px]">
-              <InputGroupInput placeholder="Search..." />
-              <InputGroupAddon>
-                <Search className="h-4 w-4" />
-              </InputGroupAddon>
-            </InputGroup>
+
+            <SeachInput />
           </div>
 
           {/* Right */}
