@@ -7,31 +7,44 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { getPopularMovies } from "@/lib/apiPages";
+import { getTrailerKey } from "@/lib/getTrailerKey";
+import Link from "next/link";
 import { FetchMovieDataType } from "@/lib/types";
-
 export const CarouselHero = async () => {
-  const popularMoviesData: FetchMovieDataType = await getPopularMovies();
+  const popularMoviesData = await getPopularMovies();
+
+const moviesWithTrailer = await Promise.all(
+  (popularMoviesData?.results ?? []).map(
+    async (movie: FetchMovieDataType["results"][number]) => {
+      const trailerKey = await getTrailerKey(String(movie.id));
+      return {
+        ...movie,
+        trailerKey,
+      };
+    },
+  ),
+);
+
   return (
-    <div>
-      <Carousel className="relative w-full">
-        <CarouselContent>
-          {popularMoviesData.results.map((movie) => (
-            <CarouselItem key={movie.id}>
+    <Carousel className="relative w-full">
+      <CarouselContent>
+        {moviesWithTrailer.map((movie) => (
+          <CarouselItem key={movie.id}>
+            
               <MovieHero
-                key={movie.id}
                 imgPath={movie.backdrop_path}
                 rating={movie.vote_average}
                 name={movie.original_title}
-                img={movie.backdrop_path}
                 description={movie.overview}
+                trailerKey={movie.trailerKey}
               />
-            </CarouselItem>
-          ))}
-        </CarouselContent>
+            
+          </CarouselItem>
+        ))}
+      </CarouselContent>
 
-        <CarouselPrevious className="absolute left-6 top-1/3  sm:left-4 sm:top-1/3 lg:left-6 lg:top-1/2 -translate-y-1/3 z-10" />
-        <CarouselNext className="absolute right-6 top-1/3  sm:right-4 sm:top-1/3 lg:right-6 lg:top-1/2 -translate-y-1/3 z-10" />
-      </Carousel>
-    </div>
+      <CarouselPrevious className="absolute left-6 top-1/2 -translate-y-1/2 z-10" />
+      <CarouselNext className="absolute right-6 top-1/2 -translate-y-1/2 z-10" />
+    </Carousel>
   );
 };

@@ -1,5 +1,6 @@
 import { MovieCredits } from "./types";
-import { SimilarMovie } from "./types";
+import { Video } from "./types";
+
 const token = process.env.TMDB_ACCESS_TOKEN;
 const option = {
   method: "GET",
@@ -19,8 +20,6 @@ export const getCreditsMovies = async (
   return data;
 };
 
-
-
 export const getSimilarMovie = async (movieId: string) => {
   if (!movieId) throw new Error("movieId missing");
 
@@ -38,3 +37,25 @@ export const getSimilarMovie = async (movieId: string) => {
   return data;
 };
 
+
+
+import type { VideoResponse } from "@/lib/types";
+
+export const getVideoMovie = async (
+  movieId: string,
+): Promise<VideoResponse> => {
+  if (!movieId) throw new Error("movieId missing");
+
+  const url = `https://api.themoviedb.org/3/movie/${movieId}/videos`;
+  const res = await fetch(url, option);
+
+  const data: VideoResponse = await res.json();
+
+  if (!res.ok) {
+    throw new Error(
+      (data as any)?.status_message ?? "TMDB videos request failed",
+    );
+  }
+
+  return data;
+};

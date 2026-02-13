@@ -1,5 +1,5 @@
 "use client";
-import { SeachInput } from "./searchMovie";
+import { SearchInput } from "./searchMovie";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -94,7 +94,7 @@ export const Header = () => {
             </DropdownMenu>
             {/* Desktop search */}
 
-            <SeachInput />
+            <SearchInput />
           </div>
 
           {/* Right */}
