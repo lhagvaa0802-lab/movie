@@ -16,9 +16,10 @@ export type Types = {
 };
 
 export type FetchMovieDataType = {
-  page: string;
+  page: number;
   results: Types[];
   total_pages: number;
+  total_results: number;
 };
 
 //------------------------------------------------------------------------------------------
