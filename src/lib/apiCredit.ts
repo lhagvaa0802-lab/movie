@@ -37,8 +37,6 @@ export const getSimilarMovie = async (movieId: string) => {
   return data;
 };
 
-
-
 import type { VideoResponse } from "@/lib/types";
 
 export const getVideoMovie = async (

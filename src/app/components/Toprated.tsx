@@ -2,12 +2,11 @@ import Link from "next/link";
 import { MovieCard } from "./MovieCard";
 
 import { SeeMore } from "./SeeMore";
-import { getTopRatedMovies } from "@/lib/apiPages"; 
+import { getTopRatedMovies } from "@/lib/apiPages";
 import { FetchMovieDataType } from "../../lib/types";
 type TopRatedProps = {
   className: string;
 };
-
 
 export const TopRated = async ({ className }: TopRatedProps) => {
   const topRatedMoviesData: FetchMovieDataType = await getTopRatedMovies();

@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 
 type TrailerModalProps = {
   videoKey?: string | null;
-  children: ReactNode; // 👈 custom button content
+  children: ReactNode;
 };
 
 export const TrailerModal = ({ videoKey, children }: TrailerModalProps) => {

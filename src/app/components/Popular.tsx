@@ -1,15 +1,13 @@
 import { MovieCard } from "./MovieCard";
 import Link from "next/link";
 import { SeeMore } from "./SeeMore";
-import { getPopularMovies } from "@/lib/apiPages"; 
+import { getPopularMovies } from "@/lib/apiPages";
 
 import { FetchMovieDataType } from "../../lib/types";
 
 type PopularProps = {
   className: string;
 };
-
-
 
 export const Popular = async ({ className }: PopularProps) => {
   const popularMoviesData: FetchMovieDataType = await getPopularMovies();

@@ -32,6 +32,10 @@ export const SearchInput = () => {
 
     const timer = setTimeout(async () => {
       const data = await getSearch(q);
+      if (!data) {
+        setMovies([]);
+        return;
+      }
       setMovies(data.results);
     }, 400);
 
@@ -59,15 +63,11 @@ export const SearchInput = () => {
         <div className="absolute left-0 top-full mt-2 w-full overflow-hidden rounded-2xl border bg-white shadow-xl z-50">
           <div className="max-h-[520px] overflow-y-auto">
             {movies.slice(0, 6).map((movie) => {
-              const year =
-                movie.release_date?.slice(0, 4) 
-              
+              const year = movie.release_date?.slice(0, 4);
 
-              const rating =
-                typeof movie.vote_average
+              const rating = typeof movie.vote_average;
 
-              const poster = `${baseImgUrl}${movie.poster_path}`
-                
+              const poster = `${baseImgUrl}${movie.poster_path}`;
 
               return (
                 <Link
@@ -114,11 +114,7 @@ export const SearchInput = () => {
           </div>
 
           {/* Footer: See all */}
-          <div className="border-t bg-white px-5 py-4">
-           
-              See all results for 
-           
-          </div>
+          <div className="border-t bg-white px-5 py-4">See all results for</div>
         </div>
       )}
     </div>
