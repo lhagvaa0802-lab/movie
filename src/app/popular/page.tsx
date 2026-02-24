@@ -13,20 +13,18 @@ import {
 } from "@/components/ui/pagination";
 
 type PopularMoviesProps = {
-  searchParams: Promise<{page:string | undefined}>;
+  searchParams: Promise<{ page: string | undefined }>;
 };
 
 export default async function PopularMovies({
   searchParams,
 }: PopularMoviesProps) {
   const { page } = await searchParams;
-  const popularMoviesData: FetchMovieDataType = await getPopularMovies(
-    page ?? 1,
-  );
-  const {total_pages}= await getPopularMovies(page)
-  const pages =Array(total_pages)
-  .fill(0)
-  .map((_, index)=>index+1)
+  const popularMoviesData: FetchMovieDataType = await getPopularMovies(page);
+  const { total_pages } = await getPopularMovies(page);
+  const pages = Array(total_pages)
+    .fill(0)
+    .map((_, index) => index + 1);
   return (
     <div className="mx-auto mt-10 max-w-7xl px-6 ">
       <div className="flex justify-between mb-4 mx-8 items-center">
@@ -52,7 +50,6 @@ export default async function PopularMovies({
               </PaginationItem>
             )}
 
-            {/* Jump to first */}
             {Number(page) > 3 && (
               <>
                 <PaginationItem>

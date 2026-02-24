@@ -18,7 +18,7 @@ export const TopRated = async ({ className }: TopRatedProps) => {
         <SeeMore url="/toprated" className={className} />
       </div>
       <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-5 place-items-center mt-10">
-        {topRatedMoviesData.results.map((movie) => (
+        {topRatedMoviesData.results.slice(0, 10).map((movie) => (
           <Link href={`/${movie.id}`} key={movie.id}>
             <MovieCard
               imgPath={movie.poster_path}

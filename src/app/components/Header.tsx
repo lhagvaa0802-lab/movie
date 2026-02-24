@@ -154,12 +154,7 @@ export const Header = () => {
               </DropdownMenu>
 
               {/* Search input */}
-              <InputGroup className="flex-1">
-                <InputGroupInput placeholder="Search..." />
-                <InputGroupAddon className=" dark:text-zinc-300">
-                  <Search className="h-4 w-4" />
-                </InputGroupAddon>
-              </InputGroup>
+              <SearchInput />
 
               {/* Close */}
               <Button

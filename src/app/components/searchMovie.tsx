@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Search, Star, ChevronRight } from "lucide-react";
+import { SeeMoreSearch } from "./SeeMoreSearch";
+
 import {
   InputGroup,
   InputGroupAddon,
@@ -114,7 +116,7 @@ export const SearchInput = () => {
           </div>
 
           {/* Footer: See all */}
-          <div className="border-t bg-white px-5 py-4">See all results for</div>
+          <SeeMoreSearch url="/SeeMoreSearch" searchValue={searchValue} />
         </div>
       )}
     </div>

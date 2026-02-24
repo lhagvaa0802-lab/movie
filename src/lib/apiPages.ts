@@ -12,7 +12,7 @@ function authHeaders() {
   };
 }
 
-function clampPage(page: number) {
+function clampPage(page: string) {
   return Math.min(500, Math.max(1, Math.trunc(page)));
 }
 
@@ -33,7 +33,7 @@ async function tmdbFetch<T>(url: string): Promise<T> {
 }
 
 export const getPopularMovies = async (
-  page: number = 1,
+  page: string | undefined = "1",
 ): Promise<FetchMovieDataType> => {
   const safePage = clampPage(page);
   const url = `https://api.themoviedb.org/3/movie/popular?language=en-US&page=${safePage}`;
@@ -53,7 +53,7 @@ export const getPopularMovies = async (
 };
 
 export const getTopRatedMovies = async (
-  page: number = 1,
+  page: string | undefined = "1",
 ): Promise<FetchMovieDataType> => {
   const safePage = clampPage(page);
   const url = `https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=${safePage}`;
@@ -73,7 +73,7 @@ export const getTopRatedMovies = async (
 };
 
 export const getUpcomingMovies = async (
-  page: number = 1,
+  page: string | undefined = "1",
 ): Promise<FetchMovieDataType> => {
   const safePage = clampPage(page);
   const url = `https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=${safePage}`;

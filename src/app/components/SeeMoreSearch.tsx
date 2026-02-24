@@ -6,14 +6,14 @@ import Link from "next/link";
 
 type SeeMoreProps = {
   url: string;
-  className: string;
+  searchValue: string;
 };
 
-export const SeeMore = ({ url, className }: SeeMoreProps) => {
+export const SeeMoreSearch = ({ searchValue }: SeeMoreProps) => {
   return (
-    <Link href={url} className={className}>
+    <Link href={`/SeeMoreSearch?search=${searchValue}`}>
       <Button variant="ghost">
-        <p>See more</p>
+        <p>See All Result For "{searchValue}"</p>
         <ArrowRight />
       </Button>
     </Link>

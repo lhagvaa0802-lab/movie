@@ -18,7 +18,7 @@ export const Upcoming = async ({ className }: UpcomingProps) => {
         <SeeMore url="/upcoming" className={className} />
       </div>
       <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-5 place-items-center mt-10">
-        {upcomingMoviesData.results.map((movie) => (
+        {upcomingMoviesData.results.slice(0, 10).map((movie) => (
           <Link href={`/${movie.id}`} key={movie.id}>
             <MovieCard
               imgPath={movie.poster_path}
