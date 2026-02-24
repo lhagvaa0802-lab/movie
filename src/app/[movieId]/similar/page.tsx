@@ -7,12 +7,10 @@ type Props = {
 };
 
 export default async function Page({ params }: Props) {
-  const { movieId } = await params; 
+  const { movieId } = await params;
 
   const data = await getSimilarMovie(movieId);
   const results = data?.results ?? [];
-
-
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-8">
