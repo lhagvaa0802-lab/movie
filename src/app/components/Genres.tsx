@@ -46,17 +46,17 @@ export const Genres = () => {
 
   return (
     <div className="grid grid-cols-3 gap-2 mt-5">
-      {GENRES.map((g) => {
-        const isActive = genreId === g.id;
+      {GENRES.map((genre) => {
+        const isActive = genreId === genre.id;
 
         return (
           <Badge
-            key={g.id}
+            key={genre.id}
             variant={isActive ? "default" : "outline"}
             className="cursor-pointer flex items-center justify-between"
-            onClick={() => onSelectGenre(g.id)}
+            onClick={() => onSelectGenre(genre.id)}
           >
-            <span className="truncate">{g.name}</span>
+            <span className="truncate">{genre.name}</span>
             <ChevronRight className="h-4 w-4 shrink-0" />
           </Badge>
         );
