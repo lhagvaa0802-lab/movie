@@ -1,7 +1,9 @@
 import { MovieCard } from "../components/MovieCard";
+
 import Link from "next/link";
+
 import { getSearch } from "@/lib/apiSerach";
-import { FetchMovieDataType } from "@/lib/types";
+
 import {
   Pagination,
   PaginationContent,
@@ -13,19 +15,39 @@ import {
 } from "@/components/ui/pagination";
 
 type SearchedMovieProps = {
-  searchParams: Promise<{ page: string | undefined }>;
+  searchParams: Promise<{ page?: string; query?: string }>;
 };
 
 export default async function SearchedMovie({
   searchParams,
 }: SearchedMovieProps) {
-  const { page } = await searchParams;
-  const searchedMoviesData = await getSearch();
+  const { page, query } = await searchParams;
+
+  const currentPage = Number(page) || 1;
+
+  const searchValue = query ?? "";
+
+  if (!searchValue.trim()) {
+    return (
+      <div className="mx-auto mt-10 max-w-7xl px-6 text-center">
+        <p className="font-semibold">Search results</p>
+        <p className="mt-4 text-sm text-zinc-500">Type something to search.</p>
+      </div>
+    );
+  }
+
+  const searchedMoviesData = await getSearch(searchValue, currentPage);
+
+  const totalPages = searchedMoviesData.total_pages;
+
+  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+
+  const withQuery = (p: number) => `?query=${searchValue}&page=${p}`;
 
   return (
     <div className="mx-auto mt-10 max-w-7xl px-6 ">
       <div className="flex justify-between mb-4 mx-8 items-center">
-        <p className="font-semibold">Popular</p>
+        <p className="font-semibold">Search results</p>
       </div>
       <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-5 place-items-center mt-10">
         {searchedMoviesData.results.map((movie) => (
@@ -38,7 +60,64 @@ export default async function SearchedMovie({
           </Link>
         ))}
       </div>
-      <div className="mt-10"></div>
+      <div className="mt-10 flex justify-center">
+        <Pagination>
+          <PaginationContent>
+            {currentPage > 1 && (
+              <PaginationItem>
+                <PaginationPrevious href={withQuery(currentPage - 1)} />
+              </PaginationItem>
+            )}
+
+            {currentPage > 3 && (
+              <>
+                <PaginationItem>
+                  <PaginationLink href={withQuery(1)}>1</PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationEllipsis />
+                </PaginationItem>
+              </>
+            )}
+
+            {pages.map((pageNum) => {
+              if (pageNum < currentPage - 2) return null;
+
+              if (pageNum > currentPage + 2) return null;
+
+              return (
+                <PaginationItem key={pageNum}>
+                  <PaginationLink
+                    href={withQuery(pageNum)}
+                    isActive={pageNum === currentPage}
+                  >
+                    {pageNum}
+                  </PaginationLink>
+                </PaginationItem>
+              );
+            })}
+
+            {currentPage < totalPages - 2 && (
+              <>
+                <PaginationItem>
+                  <PaginationEllipsis />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink href={withQuery(totalPages)}>
+                    {totalPages}
+                  </PaginationLink>
+                </PaginationItem>
+              </>
+            )}
+
+            {currentPage < totalPages && (
+              <PaginationItem>
+                <PaginationNext href={withQuery(currentPage + 1)} />
+              </PaginationItem>
+            )}
+          </PaginationContent>
+        </Pagination>
+      </div>
     </div>
   );
 }

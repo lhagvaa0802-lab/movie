@@ -1,4 +1,3 @@
-// ✅ src/lib/apiPages.ts
 import "server-only";
 import { FetchMovieDataType } from "./types";
 

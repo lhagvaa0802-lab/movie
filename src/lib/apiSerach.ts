@@ -13,15 +13,17 @@ const option = {
 
 export const getSearch = async (
   searchValue: string,
-): Promise<FetchMovieDataType | undefined> => {
+  page: number = 1,
+): Promise<FetchMovieDataType> => {
   try {
-    const url = `https://api.themoviedb.org/3/search/movie?query=${searchValue}&language=en-US`;
+    const url = `https://api.themoviedb.org/3/search/movie?query=${searchValue}&language=en-US&page=${page}`;
     const res = await fetch(url, option);
-
-    const data = await res.json();
-
-    return data;
+    if (!res.ok) {
+      throw new Error("Failed to fetch search results");
+    }
+    return res.json();
   } catch (error) {
-    console.log(error);
+    console.error("Search API Error:", error);
+    throw error;
   }
 };
