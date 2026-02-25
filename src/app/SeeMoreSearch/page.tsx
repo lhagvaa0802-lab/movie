@@ -1,8 +1,21 @@
 import { MovieCard } from "../components/MovieCard";
+import { ChevronRight } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 import Link from "next/link";
 
 import { getSearch } from "@/lib/apiSerach";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 import {
   Pagination,
@@ -13,7 +26,35 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-
+export const genres = [
+  "Action",
+  "Adventure",
+  "Animation",
+  "Biography",
+  "Comedy",
+  "Crime",
+  "Documentary",
+  "Drama",
+  "Family",
+  "Fantasy",
+  "Film-Noir",
+  "Game-Show",
+  "History",
+  "Horror",
+  "Music",
+  "Musical",
+  "Mystery",
+  "News",
+  "Reality-TV",
+  "Romance",
+  "Sci-Fi",
+  "Short",
+  "Sport",
+  "Talk-Show",
+  "Thriller",
+  "War",
+  "Western",
+];
 type SearchedMovieProps = {
   searchParams: Promise<{ page?: string; query?: string }>;
 };
@@ -49,17 +90,27 @@ export default async function SearchedMovie({
       <div className="flex justify-between mb-4 mx-8 items-center">
         <p className="font-semibold">Search results</p>
       </div>
-      <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-5 place-items-center mt-10">
-        {searchedMoviesData.results.map((movie) => (
-          <Link href={`/${movie.id}`} key={movie.id}>
-            <MovieCard
-              imgPath={movie.poster_path}
-              rating={movie.vote_average}
-              name={movie.original_title}
-            />
-          </Link>
-        ))}
+      <div className="flex">
+        <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-5 place-items-center mt-10">
+          {searchedMoviesData.results.slice(0, 6).map((movie) => (
+            <Link href={`/${movie.id}`} key={movie.id}>
+              <MovieCard
+                imgPath={movie.poster_path}
+                rating={movie.vote_average}
+                name={movie.original_title}
+              />
+            </Link>
+          ))}
+        </div>
+        <div className="grid grid-cols-3 gap-2 mt-5">
+          {genres.map((genre) => (
+            <Badge key={genre} variant="outline">
+              {genre} {<ChevronRight />}
+            </Badge>
+          ))}
+        </div>
       </div>
+
       <div className="mt-10 flex justify-center">
         <Pagination>
           <PaginationContent>
