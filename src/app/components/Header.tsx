@@ -1,65 +1,70 @@
 "use client";
+
 import { SearchInput } from "./searchMovie";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-} from "@/components/ui/input-group";
 import { ChevronDown, ChevronRight, Film, Search, X } from "lucide-react";
 import { ModeToggle } from "./ModeToggle";
 import { Badge } from "@/components/ui/badge";
 
-export const genres = [
-  "Action",
-  "Adventure",
-  "Animation",
-  "Biography",
-  "Comedy",
-  "Crime",
-  "Documentary",
-  "Drama",
-  "Family",
-  "Fantasy",
-  "Film-Noir",
-  "Game-Show",
-  "History",
-  "Horror",
-  "Music",
-  "Musical",
-  "Mystery",
-  "News",
-  "Reality-TV",
-  "Romance",
-  "Sci-Fi",
-  "Short",
-  "Sport",
-  "Talk-Show",
-  "Thriller",
-  "War",
-  "Western",
+import { useQueryState, parseAsInteger } from "nuqs";
+
+const GENRES = [
+  { id: 28, name: "Action" },
+  { id: 12, name: "Adventure" },
+  { id: 16, name: "Animation" },
+  { id: 35, name: "Comedy" },
+  { id: 80, name: "Crime" },
+  { id: 99, name: "Documentary" },
+  { id: 18, name: "Drama" },
+  { id: 10751, name: "Family" },
+  { id: 14, name: "Fantasy" },
+  { id: 36, name: "History" },
+  { id: 27, name: "Horror" },
+  { id: 10402, name: "Music" },
+  { id: 9648, name: "Mystery" },
+  { id: 10749, name: "Romance" },
+  { id: 878, name: "Sci-Fi" },
+  { id: 10770, name: "TV Movie" },
+  { id: 53, name: "Thriller" },
+  { id: 10752, name: "War" },
+  { id: 37, name: "Western" },
 ];
 
 export const Header = () => {
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+
+  // ✅ keep active highlight in header
+  const [genreId, setGenreId] = useQueryState(
+    "genre",
+    parseAsInteger.withOptions({ shallow: false }),
+  );
+
+  const [, setPage] = useQueryState(
+    "page",
+    parseAsInteger.withDefault(1).withOptions({ shallow: false }),
+  );
+
+  // optional: if you want genre click to exit search mode
+  const [, setQuery] = useQueryState("query", { shallow: false } as any);
 
   return (
     <div className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur dark:border-zinc-800 dark:bg-black/60">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex h-[59px] items-center justify-between">
           <div
-            className={`flex items-center gap-3 ${mobileSearchOpen ? "hidden lg:flex" : ""}`}
+            className={`flex items-center gap-3 ${
+              mobileSearchOpen ? "hidden lg:flex" : ""
+            }`}
           >
             <Film className="text-indigo-700" />
             <p className="text-indigo-700 italic font-semibold">Movie Z</p>
@@ -83,25 +88,42 @@ export const Header = () => {
                 </DropdownMenuLabel>
 
                 <DropdownMenuSeparator />
+
+                {/* ✅ DESKTOP GENRES */}
                 <div className="grid grid-cols-2 gap-2 mt-5">
-                  {genres.map((genre) => (
-                    <Badge key={genre} variant="outline">
-                      {genre} {<ChevronRight />}
-                    </Badge>
+                  {GENRES.map((g) => (
+                    <DropdownMenuItem key={g.id} asChild className="p-0">
+                      <Link
+                        href={`/SeeMoreSearch?genre=${g.id}&page=1`}
+                        className="block w-full"
+                        onClick={() => {
+                          setGenreId(g.id);
+                          setPage(1);
+                          setQuery(null);
+                        }}
+                      >
+                        <Badge
+                          variant={genreId === g.id ? "default" : "outline"}
+                          className="w-full cursor-pointer flex items-center justify-between"
+                        >
+                          {g.name}
+                          <ChevronRight className="h-4 w-4" />
+                        </Badge>
+                      </Link>
+                    </DropdownMenuItem>
                   ))}
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>
-            {/* Desktop search */}
 
             <SearchInput />
           </div>
 
-          {/* Right */}
           <div
-            className={`flex items-center gap-2 ${mobileSearchOpen ? "hidden lg:flex" : ""}`}
+            className={`flex items-center gap-2 ${
+              mobileSearchOpen ? "hidden lg:flex" : ""
+            }`}
           >
-            {/* Mobile search open */}
             <Button
               size="icon"
               variant="outline"
@@ -116,12 +138,10 @@ export const Header = () => {
           </div>
         </div>
 
-        {/* MOBILE SEARCH MODE PANEL */}
-
+        {/* ✅ MOBILE SEARCH MODE PANEL */}
         {mobileSearchOpen && (
           <div className="pb-3 lg:hidden">
             <div className="flex items-center gap-2">
-              {/* Genre dropdown button */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
@@ -141,22 +161,39 @@ export const Header = () => {
                       See lists of movies by genre
                     </p>
                   </DropdownMenuLabel>
+
                   <DropdownMenuSeparator />
 
+                  {/* ✅ MOBILE GENRES */}
                   <div className="grid grid-cols-2 gap-2 mt-5">
-                    {genres.map((genre) => (
-                      <Badge key={genre} variant="outline">
-                        {genre} {<ChevronRight />}
-                      </Badge>
+                    {GENRES.map((g) => (
+                      <DropdownMenuItem key={g.id} asChild className="p-0">
+                        <Link
+                          href={`/SeeMoreSearch?genre=${g.id}&page=1`}
+                          className="block w-full"
+                          onClick={() => {
+                            setGenreId(g.id);
+                            setPage(1);
+                            setQuery(null);
+                            setMobileSearchOpen(false);
+                          }}
+                        >
+                          <Badge
+                            variant={genreId === g.id ? "default" : "outline"}
+                            className="w-full cursor-pointer flex items-center justify-between"
+                          >
+                            {g.name}
+                            <ChevronRight className="h-4 w-4" />
+                          </Badge>
+                        </Link>
+                      </DropdownMenuItem>
                     ))}
                   </div>
                 </DropdownMenuContent>
               </DropdownMenu>
 
-              {/* Search input */}
               <SearchInput />
 
-              {/* Close */}
               <Button
                 size="icon"
                 variant="ghost"

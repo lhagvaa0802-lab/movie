@@ -9,7 +9,7 @@ import { Types } from "@/lib/types";
 import { Trailer } from "../components/trailer";
 
 type Detailspageprops = {
-  className: string; // optional болгосон
+  className: string;
   params: Promise<{ movieId: string }>;
 };
 

@@ -35,10 +35,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Header />
-
-          <NuqsAdapter>{children}</NuqsAdapter>
-          <Footer />
+          {/* ✅ Nuqs must wrap components that use useQueryState (Header!) */}
+          <NuqsAdapter>
+            <Header />
+            {children}
+            <Footer />
+          </NuqsAdapter>
         </ThemeProvider>
       </body>
     </html>

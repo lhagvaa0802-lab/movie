@@ -1,8 +1,5 @@
-import { FetchMovieDataType } from "./types";
-
+import type { FetchMovieDataType } from "@/lib/types";
 const token = process.env.TMDB_ACCESS_TOKEN;
-// const token =
-// "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1OTg2ZDQ5YWMzOWU2ZjA5ZjdiNzZhMGMzMDgxN2NiYSIsIm5iZiI6MTc3MDYwODMyMC4yNjEsInN1YiI6IjY5ODk1NmMwZGRhMDQ2OWIwODVjYWViZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.zCT_Tj-czyrmMHh8STW_GVKn_FiuOJTLvFjpbyebgTs";
 const option = {
   method: "GET",
   headers: {
@@ -15,15 +12,24 @@ export const getSearch = async (
   searchValue: string,
   page: number = 1,
 ): Promise<FetchMovieDataType> => {
-  try {
-    const url = `https://api.themoviedb.org/3/search/movie?query=${searchValue}&language=en-US&page=${page}`;
-    const res = await fetch(url, option);
-    if (!res.ok) {
-      throw new Error("Failed to fetch search results");
-    }
-    return res.json();
-  } catch (error) {
-    console.error("Search API Error:", error);
-    throw error;
-  }
+  const url = new URL("https://api.themoviedb.org/3/search/movie");
+  url.searchParams.set("query", searchValue);
+  url.searchParams.set("language", "en-US");
+  url.searchParams.set("page", String(page));
+
+  const res = await fetch(url.toString(), option);
+  if (!res.ok) throw new Error("Failed to fetch search results");
+  return res.json();
+};
+
+export const getDiscoverMovies = async (genreId?: string, page: number = 1) => {
+  const url = new URL("https://api.themoviedb.org/3/discover/movie");
+  url.searchParams.set("language", "en-US");
+  url.searchParams.set("page", String(page));
+console.log("FETCH URL:", url.toString());
+  if (genreId) url.searchParams.set("with_genres", genreId);
+
+  const res = await fetch(url.toString(), option);
+  if (!res.ok) throw new Error("Failed to fetch discover movies");
+  return res.json();
 };
