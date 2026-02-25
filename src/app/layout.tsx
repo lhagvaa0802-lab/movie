@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "./components/theme-provider";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,9 +23,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -37,7 +36,8 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Header />
-          {children}
+
+          <NuqsAdapter>{children}</NuqsAdapter>
           <Footer />
         </ThemeProvider>
       </body>

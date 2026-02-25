@@ -1,21 +1,7 @@
 import { MovieCard } from "../components/MovieCard";
-import { ChevronRight } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-
 import Link from "next/link";
 
 import { getSearch } from "@/lib/apiSerach";
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 import {
   Pagination,
@@ -26,43 +12,18 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-export const genres = [
-  "Action",
-  "Adventure",
-  "Animation",
-  "Biography",
-  "Comedy",
-  "Crime",
-  "Documentary",
-  "Drama",
-  "Family",
-  "Fantasy",
-  "Film-Noir",
-  "Game-Show",
-  "History",
-  "Horror",
-  "Music",
-  "Musical",
-  "Mystery",
-  "News",
-  "Reality-TV",
-  "Romance",
-  "Sci-Fi",
-  "Short",
-  "Sport",
-  "Talk-Show",
-  "Thriller",
-  "War",
-  "Western",
-];
+import { Genres } from "../components/Genres";
+
 type SearchedMovieProps = {
-  searchParams: Promise<{ page?: string; query?: string }>;
+  searchParams: Promise<{ page: string; query: string; genre?: string }>;
 };
 
 export default async function SearchedMovie({
   searchParams,
 }: SearchedMovieProps) {
-  const { page, query } = await searchParams;
+  const { page, query, genre } = await searchParams;
+
+  console.log("genre: ", genre);
 
   const currentPage = Number(page) || 1;
 
@@ -102,13 +63,7 @@ export default async function SearchedMovie({
             </Link>
           ))}
         </div>
-        <div className="grid grid-cols-3 gap-2 mt-5">
-          {genres.map((genre) => (
-            <Badge key={genre} variant="outline">
-              {genre} {<ChevronRight />}
-            </Badge>
-          ))}
-        </div>
+        <Genres />
       </div>
 
       <div className="mt-10 flex justify-center">
