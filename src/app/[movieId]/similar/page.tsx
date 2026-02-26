@@ -1,16 +1,38 @@
 import Link from "next/link";
 import { getSimilarMovie } from "@/lib/apiCredit";
 import { MovieCard } from "@/app/components/MovieCard";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 type Props = {
   params: Promise<{ movieId: string }>;
+  searchParams: Promise<{ page?: string }>;
 };
 
-export default async function Page({ params }: Props) {
+export default async function Page({ params, searchParams }: Props) {
   const { movieId } = await params;
+  const sp = await searchParams;
 
-  const data = await getSimilarMovie(movieId);
+  const currentPage = Math.max(1, Number(sp.page ?? 1) || 1);
+
+  // ✅ make sure your getSimilarMovie supports (movieId, page)
+  const data = await getSimilarMovie(movieId, currentPage);
+
   const results = data?.results ?? [];
+
+  // ✅ TMDB max page is 500
+  const rawTotalPages = data?.total_pages ?? 1;
+  const totalPages = Math.min(rawTotalPages, 500);
+
+  const withPage = (p: number) => `?page=${p}`;
+  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-8">
@@ -22,11 +44,71 @@ export default async function Page({ params }: Props) {
             <MovieCard
               imgPath={m.poster_path ?? "/no-image.png"}
               rating={m.vote_average}
-              name={m.original_title}
+              name={m.original_title ?? m.title}
             />
           </Link>
         ))}
       </div>
+
+      {totalPages > 1 && (
+        <div className="mt-10 flex justify-center">
+          <Pagination>
+            <PaginationContent>
+              {currentPage > 1 && (
+                <PaginationItem>
+                  <PaginationPrevious href={withPage(currentPage - 1)} />
+                </PaginationItem>
+              )}
+
+              {currentPage > 3 && (
+                <>
+                  <PaginationItem>
+                    <PaginationLink href={withPage(1)}>1</PaginationLink>
+                  </PaginationItem>
+                  <PaginationItem>
+                    <PaginationEllipsis />
+                  </PaginationItem>
+                </>
+              )}
+
+              {pages.map((pageNum) => {
+                if (pageNum < currentPage - 2) return null;
+                if (pageNum > currentPage + 2) return null;
+
+                return (
+                  <PaginationItem key={pageNum}>
+                    <PaginationLink
+                      href={withPage(pageNum)}
+                      isActive={pageNum === currentPage}
+                    >
+                      {pageNum}
+                    </PaginationLink>
+                  </PaginationItem>
+                );
+              })}
+
+              {currentPage < totalPages - 2 && (
+                <>
+                  <PaginationItem>
+                    <PaginationEllipsis />
+                  </PaginationItem>
+                  <PaginationItem>
+                    <PaginationLink href={withPage(totalPages)}>
+                      {totalPages}
+                    </PaginationLink>
+                  </PaginationItem>
+                </>
+              )}
+
+              {currentPage < totalPages && (
+                <PaginationItem>
+                  <PaginationNext href={withPage(currentPage + 1)} />
+                </PaginationItem>
+              )}
+            </PaginationContent>
+          </Pagination>
+        </div>
+      )}
     </div>
   );
 }

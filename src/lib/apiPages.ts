@@ -1,92 +1,57 @@
 import "server-only";
-import { FetchMovieDataType } from "./types";
-
-const token = process.env.TMDB_ACCESS_TOKEN;
-
-function authHeaders() {
-  if (!token) throw new Error("TMDB_ACCESS_TOKEN is missing in .env.local");
-  return {
-    accept: "application/json",
-    Authorization: `Bearer ${token}`,
-  };
-}
-
-function clampPage(page: string) {
-  return Math.min(500, Math.max(1, Math.trunc(page)));
-}
-
-async function tmdbFetch<T>(url: string): Promise<T> {
-  const response = await fetch(url, {
-    method: "GET",
-    headers: authHeaders(),
-    cache: "no-store",
-    next: { revalidate: 0 },
-  });
-
-  if (!response.ok) {
-    const err = await response.text();
-    throw new Error(`TMDB ${response.status}: ${err}`);
-  }
-
-  return response.json();
-}
+import type { FetchMovieDataType } from "./types";
+import { options } from "./tmdb";
 
 export const getPopularMovies = async (
   page: string | undefined = "1",
 ): Promise<FetchMovieDataType> => {
-  const safePage = clampPage(page);
-  const url = `https://api.themoviedb.org/3/movie/popular?language=en-US&page=${safePage}`;
+  const safePage =
+    Number.isFinite(Number(page)) && Number(page) > 0
+      ? Math.trunc(Number(page))
+      : 1;
 
-  const data = await tmdbFetch<FetchMovieDataType>(url);
-
-  console.log(
-    "[TMDB Popular] requested=",
-    safePage,
-    "returned page=",
-    data.page,
-    "firstId=",
-    data.results?.[0]?.id,
+  const res = await fetch(
+    `https://api.themoviedb.org/3/movie/popular?language=en-US&page=${safePage}`,
+    options,
   );
 
-  return data;
+  if (!res.ok) throw new Error("Failed to fetch popular movies");
+
+  return res.json();
 };
 
 export const getTopRatedMovies = async (
   page: string | undefined = "1",
 ): Promise<FetchMovieDataType> => {
-  const safePage = clampPage(page);
-  const url = `https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=${safePage}`;
+  const safePage =
+    Number.isFinite(Number(page)) && Number(page) > 0
+      ? Math.trunc(Number(page))
+      : 1;
 
-  const data = await tmdbFetch<FetchMovieDataType>(url);
-
-  console.log(
-    "[TMDB TopRated] requested=",
-    safePage,
-    "returned page=",
-    data.page,
-    "firstId=",
-    data.results?.[0]?.id,
+  const res = await fetch(
+    `https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=${safePage}`,
+    options,
   );
 
-  return data;
+  if (!res.ok) throw new Error("Failed to fetch top rated movies");
+
+  return res.json();
 };
 
 export const getUpcomingMovies = async (
   page: string | undefined = "1",
 ): Promise<FetchMovieDataType> => {
-  const safePage = clampPage(page);
-  const url = `https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=${safePage}`;
+  const safePage =
+    Number.isFinite(Number(page)) && Number(page) > 0
+      ? Math.trunc(Number(page))
+      : 1;
 
-  const data = await tmdbFetch<FetchMovieDataType>(url);
-
-  console.log(
-    "[TMDB Upcoming] requested=",
-    safePage,
-    "returned page=",
-    data.page,
-    "firstId=",
-    data.results?.[0]?.id,
+  const res = await fetch(
+    `https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=${safePage}`,
+    options,
   );
 
-  return data;
+  if (!res.ok) throw new Error("Failed to fetch upcoming movies");
+
+  return res.json();
 };

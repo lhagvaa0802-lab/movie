@@ -12,7 +12,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { GenresList } from "../components/GenresList";
+import GenresListServer from "./_components/GenresListServer";
 
 type PageProps = {
   searchParams: Promise<{
@@ -25,23 +25,24 @@ type PageProps = {
 export default async function Page({ searchParams }: PageProps) {
   const { page, query, genre } = await searchParams;
 
-  const currentPage = Number(page) || 1;
+  const currentPageRaw = Number(page) || 1;
   const searchValue = query ?? "";
 
   const data = genre
-    ? await getDiscoverMovies(genre, currentPage)
-    : await getSearch(searchValue, currentPage);
+    ? await getDiscoverMovies(genre, currentPageRaw)
+    : await getSearch(searchValue, currentPageRaw);
 
   const results = data?.results ?? [];
   const totalPages = data?.total_pages ?? 1;
 
+  // ✅ clamp
+  const currentPage = Math.min(Math.max(1, currentPageRaw), totalPages);
+
   const withQuery = (p: number) => {
     const sp = new URLSearchParams();
     sp.set("page", String(p));
-
     if (searchValue.trim()) sp.set("query", searchValue);
     if (genre) sp.set("genre", genre);
-
     return `?${sp.toString()}`;
   };
 
@@ -56,7 +57,73 @@ export default async function Page({ searchParams }: PageProps) {
     );
   }
 
-  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+const PaginationBar = () =>
+  totalPages > 1 ? (
+    <div className="mt-10 flex justify-center">
+      <Pagination>
+        <PaginationContent className="flex-nowrap gap-1">
+          {currentPage > 1 && (
+            <PaginationItem>
+              <PaginationPrevious href={withQuery(currentPage - 1)} />
+            </PaginationItem>
+          )}
+
+          {currentPage > 3 && (
+            <>
+              <PaginationItem>
+                <PaginationLink href={withQuery(1)} className="h-9 w-9 p-0">
+                  1
+                </PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationEllipsis />
+              </PaginationItem>
+            </>
+          )}
+
+          {Array.from({ length: 5 }, (_, i) => currentPage - 2 + i).map(
+            (pageNum) => {
+              if (pageNum < 1 || pageNum > totalPages) return null;
+
+              return (
+                <PaginationItem key={pageNum}>
+                  <PaginationLink
+                    href={withQuery(pageNum)}
+                    isActive={pageNum === currentPage}
+                    className="h-9 w-9 p-0"
+                  >
+                    {pageNum}
+                  </PaginationLink>
+                </PaginationItem>
+              );
+            },
+          )}
+
+          {currentPage < totalPages - 2 && (
+            <>
+              <PaginationItem>
+                <PaginationEllipsis />
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink
+                  href={withQuery(totalPages)}
+                  className="h-9 w-9 p-0"
+                >
+                  {totalPages}
+                </PaginationLink>
+              </PaginationItem>
+            </>
+          )}
+
+          {currentPage < totalPages && (
+            <PaginationItem>
+              <PaginationNext href={withQuery(currentPage + 1)} />
+            </PaginationItem>
+          )}
+        </PaginationContent>
+      </Pagination>
+    </div>
+  ) : null;
 
   return (
     <div className="mx-auto mt-10 max-w-7xl px-6">
@@ -66,10 +133,11 @@ export default async function Page({ searchParams }: PageProps) {
         </p>
       </div>
 
-      <div className="flex gap-6">
-        {/* Movie Grid */}
-        <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-5 place-items-center mt-10 flex-1">
-          {results.map((movie: any) => (
+      {/* ===================== MOBILE (only) ===================== */}
+      <div className="lg:hidden">
+        {/* Movie Grid: mobile 2 cols */}
+        <div className="mt-6 grid grid-cols-2 gap-6 place-items-center">
+          {results.slice (0,6).map((movie: any) => (
             <Link href={`/${movie.id}`} key={movie.id}>
               <MovieCard
                 imgPath={movie.poster_path}
@@ -80,72 +148,40 @@ export default async function Page({ searchParams }: PageProps) {
           ))}
         </div>
 
-        {/* Genre Sidebar */}
-        <div className="mt-10 w-[280px] shrink-0">
-          <GenresList />
+        {/* Pagination */}
+        <PaginationBar />
+
+        {/* Genre Sidebar bottom on mobile */}
+        <div className="mt-8">
+          <GenresListServer />
         </div>
       </div>
 
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="mt-10 flex justify-center">
-          <Pagination>
-            <PaginationContent>
-              {currentPage > 1 && (
-                <PaginationItem>
-                  <PaginationPrevious href={withQuery(currentPage - 1)} />
-                </PaginationItem>
-              )}
+      {/* ===================== DESKTOP (only) ===================== */}
+      <div className="hidden lg:block">
+        <div className="flex gap-6">
+          {/* Movie Grid: desktop 4 cols */}
+          <div className="mt-10 grid flex-1 grid-cols-3 gap-6 place-items-center">
+            {results.slice (0,9).map((movie: any) => (
+              <Link href={`/${movie.id}`} key={movie.id}>
+                <MovieCard
+                  imgPath={movie.poster_path}
+                  rating={movie.vote_average}
+                  name={movie.original_title ?? movie.title}
+                />
+              </Link>
+            ))}
+          </div>
 
-              {currentPage > 3 && (
-                <>
-                  <PaginationItem>
-                    <PaginationLink href={withQuery(1)}>1</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationEllipsis />
-                  </PaginationItem>
-                </>
-              )}
-
-              {pages.map((pageNum) => {
-                if (pageNum < currentPage - 2) return null;
-                if (pageNum > currentPage + 2) return null;
-
-                return (
-                  <PaginationItem key={pageNum}>
-                    <PaginationLink
-                      href={withQuery(pageNum)}
-                      isActive={pageNum === currentPage}
-                    >
-                      {pageNum}
-                    </PaginationLink>
-                  </PaginationItem>
-                );
-              })}
-
-              {currentPage < totalPages - 2 && (
-                <>
-                  <PaginationItem>
-                    <PaginationEllipsis />
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href={withQuery(totalPages)}>
-                      {totalPages}
-                    </PaginationLink>
-                  </PaginationItem>
-                </>
-              )}
-
-              {currentPage < totalPages && (
-                <PaginationItem>
-                  <PaginationNext href={withQuery(currentPage + 1)} />
-                </PaginationItem>
-              )}
-            </PaginationContent>
-          </Pagination>
+          {/* Genre Sidebar right */}
+          <div className="mt-10 w-[280px] shrink-0">
+            <GenresListServer />
+          </div>
         </div>
-      )}
+
+        {/* Pagination */}
+        <PaginationBar />
+      </div>
     </div>
   );
 }

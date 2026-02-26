@@ -1,40 +1,34 @@
 import { MovieCredits } from "./types";
-import { TmdbOption } from "./option";
+import { options } from "./tmdb";
+import { FetchMovieDataType } from "@/lib/types";
 
-const token = process.env.TMDB_ACCESS_TOKEN;
-const option = {
-  method: "GET",
-  headers: {
-    accept: "aplication/json",
-    Authorization: `Bearer ${token}`,
-  },
-};
+
+
 export const getCreditsMovies = async (
   movieId: string,
 ): Promise<MovieCredits> => {
   const response = await fetch(
     `https://api.themoviedb.org/3/movie/${movieId}/credits`,
-    option,
+    options,
   );
   const data = await response.json();
   return data;
 };
 
-export const getSimilarMovie = async (movieId: string) => {
-  if (!movieId) throw new Error("movieId missing");
+export const getSimilarMovie = async (
+  movieId: string,
+  page: number = 1,
+): Promise<FetchMovieDataType> => {
+  const safePage = Math.min(500, Math.max(1, Math.trunc(page)));
 
-  const url = `https://api.themoviedb.org/3/movie/${movieId}/similar?language=en-US&page=1`;
-  const res = await fetch(url, option);
+  const res = await fetch(
+    `https://api.themoviedb.org/3/movie/${movieId}/similar?language=en-US&page=${safePage}`,
+    options,
+  );
 
-  const data = await res.json();
+  if (!res.ok) throw new Error("Failed to fetch similar movies");
 
-  console.log("TMDB similar status:", res.status);
-  if (!res.ok) {
-    console.log("TMDB similar error body:", data);
-    throw new Error(data?.status_message ?? "TMDB similar request failed");
-  }
-
-  return data;
+  return res.json();
 };
 
 import type { VideoResponse } from "@/lib/types";
@@ -45,7 +39,7 @@ export const getVideoMovie = async (
   if (!movieId) throw new Error("movieId missing");
 
   const url = `https://api.themoviedb.org/3/movie/${movieId}/videos`;
-  const res = await fetch(url, option);
+  const res = await fetch(url, options);
 
   const data: VideoResponse = await res.json();
 

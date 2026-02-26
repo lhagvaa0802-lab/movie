@@ -84,15 +84,7 @@ const Details = async ({ params, className }: Detailspageprops) => {
 
           <div className="col-span-12 sm:col-span-8">
             <div className="relative h-[240px] sm:h-[428px] overflow-hidden rounded-lg">
-              {/* BACKDROP
-              <div
-                className="absolute inset-0 bg-cover bg-center"
-                style={{
-                  backgroundImage: `url(${baseImgUrl + movie.backdrop_path})`,
-                }}
-              /> */}
-
-              <div className="absolute inset-0 bg-black/40" />
+            <div className="absolute inset-0 bg-black/40" />
 
               <div className="absolute inset-0 flex items-center justify-center">
                 <Trailer movieId={movieId} />

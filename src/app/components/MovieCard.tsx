@@ -1,6 +1,6 @@
 import { Card, CardFooter } from "@/components/ui/card";
 import { Star } from "lucide-react";
-import Image from "next/image";
+
 
 type MovieCardProps = {
   imgPath: string;
@@ -24,7 +24,7 @@ export const MovieCard = (props: MovieCardProps) => {
         <div className="flex items-center gap-1 text-yellow-400">
           <Star size={14} fill="currentColor" />
           <span className="text-sm  text-black">
-            {rating} <span className=" text-gray-400">/10</span>
+            {rating.toFixed(2)} <span className=" text-gray-400">/10</span>
           </span>
         </div>
         <p className="text-sm font-medium line-clamp-2 h-10">{name}</p>

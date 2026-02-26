@@ -1,6 +1,6 @@
 "use client";
 
-import { SearchInput } from "./searchMovie";
+import { SearchInput } from "../SeeMoreSearch/_components/searchMovie";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -13,34 +13,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown, ChevronRight, Film, Search, X } from "lucide-react";
-import { ModeToggle } from "./ModeToggle";
+import { ModeToggle } from "../components/ModeToggle";
 import { Badge } from "@/components/ui/badge";
-
 import { useQueryState, parseAsInteger } from "nuqs";
+import type { Genre } from "@/lib/types";
 
-const GENRES = [
-  { id: 28, name: "Action" },
-  { id: 12, name: "Adventure" },
-  { id: 16, name: "Animation" },
-  { id: 35, name: "Comedy" },
-  { id: 80, name: "Crime" },
-  { id: 99, name: "Documentary" },
-  { id: 18, name: "Drama" },
-  { id: 10751, name: "Family" },
-  { id: 14, name: "Fantasy" },
-  { id: 36, name: "History" },
-  { id: 27, name: "Horror" },
-  { id: 10402, name: "Music" },
-  { id: 9648, name: "Mystery" },
-  { id: 10749, name: "Romance" },
-  { id: 878, name: "Sci-Fi" },
-  { id: 10770, name: "TV Movie" },
-  { id: 53, name: "Thriller" },
-  { id: 10752, name: "War" },
-  { id: 37, name: "Western" },
-];
-
-export const Header = () => {
+export const HeaderClient = ({ genres }: { genres: Genre[] }) => {
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 
   const [genreId] = useQueryState(
@@ -53,9 +31,7 @@ export const Header = () => {
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex h-[59px] items-center justify-between">
           <div
-            className={`flex items-center gap-3 ${
-              mobileSearchOpen ? "hidden lg:flex" : ""
-            }`}
+            className={`flex items-center gap-3 ${mobileSearchOpen ? "hidden lg:flex" : ""}`}
           >
             <Film className="text-indigo-700" />
             <p className="text-indigo-700 italic font-semibold">Movie Z</p>
@@ -80,34 +56,25 @@ export const Header = () => {
 
                 <DropdownMenuSeparator />
 
-                {/* ✅ DESKTOP GENRES */}
                 <div className="grid grid-cols-2 gap-2 mt-5">
-                  {GENRES.map((g) => {
-                    const a = () => {
-                      console.log("ok");
-                    };
-                    return (
-                      <DropdownMenuItem
-                        key={g.id}
-                        asChild
-                        className="p-0"
-                        onClick={a}
+                  {genres.map((g) => (
+                    <DropdownMenuItem key={g.id} asChild className="p-0">
+                      <Link
+                        href={`/SeeMoreSearch?genre=${g.id}&page=1`}
+                        className="block w-full"
                       >
-                        <Link
-                          href={`/SeeMoreSearch?genre=${g.id}&page=1`}
-                          className="block w-full"
+                        <Badge
+                          variant={
+                            Number(genreId) === g.id ? "default" : "outline"
+                          }
+                          className="w-full cursor-pointer flex items-center justify-between"
                         >
-                          <Badge
-                            variant={genreId === g.id ? "default" : "outline"}
-                            className="w-full cursor-pointer flex items-center justify-between"
-                          >
-                            {g.name}
-                            <ChevronRight className="h-4 w-4" />
-                          </Badge>
-                        </Link>
-                      </DropdownMenuItem>
-                    );
-                  })}
+                          {g.name}
+                          <ChevronRight className="h-4 w-4" />
+                        </Badge>
+                      </Link>
+                    </DropdownMenuItem>
+                  ))}
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -116,9 +83,7 @@ export const Header = () => {
           </div>
 
           <div
-            className={`flex items-center gap-2 ${
-              mobileSearchOpen ? "hidden lg:flex" : ""
-            }`}
+            className={`flex items-center gap-2 ${mobileSearchOpen ? "hidden lg:flex" : ""}`}
           >
             <Button
               size="icon"
@@ -134,7 +99,6 @@ export const Header = () => {
           </div>
         </div>
 
-        {/* ✅ MOBILE SEARCH MODE PANEL */}
         {mobileSearchOpen && (
           <div className="pb-3 lg:hidden">
             <div className="flex items-center gap-2">
@@ -143,7 +107,6 @@ export const Header = () => {
                   <Button
                     size="icon"
                     variant="outline"
-                    className="bg-white text-zinc-900 dark:bg-zinc-900 dark:text-white"
                     aria-label="Open genres"
                   >
                     <ChevronDown className="h-4 w-4" />
@@ -160,16 +123,17 @@ export const Header = () => {
 
                   <DropdownMenuSeparator />
 
-                  {/* ✅ MOBILE GENRES */}
                   <div className="grid grid-cols-2 gap-2 mt-5">
-                    {GENRES.map((g) => (
+                    {genres.map((g) => (
                       <DropdownMenuItem key={g.id} asChild className="p-0">
                         <Link
                           href={`/SeeMoreSearch?genre=${g.id}&page=1`}
                           className="block w-full"
                         >
                           <Badge
-                            variant={genreId === g.id ? "default" : "outline"}
+                            variant={
+                              Number(genreId) === g.id ? "default" : "outline"
+                            }
                             className="w-full cursor-pointer flex items-center justify-between"
                           >
                             {g.name}
