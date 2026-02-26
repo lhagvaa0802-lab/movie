@@ -1,4 +1,3 @@
-
 import { getVideoMovie } from "@/lib/apiCredit";
 
 export const Trailer = async ({ movieId }: { movieId: string }) => {
@@ -14,7 +13,7 @@ export const Trailer = async ({ movieId }: { movieId: string }) => {
   if (!trailer) return null;
 
   return (
-    <div className="aspect-video w-full overflow-hidden rounded-xl bg-zinc-100">
+    <div className="aspect-video w-full   bg-zinc-100">
       <iframe
         className="h-full w-full"
         src={`https://www.youtube.com/embed/${trailer.key}`}

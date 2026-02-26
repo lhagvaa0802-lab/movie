@@ -78,7 +78,7 @@ export default async function PopularMovies({
             })}
 
             <PaginationItem>
-              <PaginationNext href={`?page=${Number(page) + 1}`} />
+              <PaginationNext href={`?page=${Number(page ?? 1) + 1}`} />
             </PaginationItem>
           </PaginationContent>
         </Pagination>

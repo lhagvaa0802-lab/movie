@@ -1,4 +1,5 @@
 import { MovieCredits } from "./types";
+import { TmdbOption } from "./option";
 
 const token = process.env.TMDB_ACCESS_TOKEN;
 const option = {

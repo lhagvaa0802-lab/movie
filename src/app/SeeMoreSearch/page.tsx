@@ -12,7 +12,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { Genres } from "../components/Genres";
+import { GenresList } from "../components/GenresList";
 
 type PageProps = {
   searchParams: Promise<{
@@ -28,14 +28,12 @@ export default async function Page({ searchParams }: PageProps) {
   const currentPage = Number(page) || 1;
   const searchValue = query ?? "";
 
-  
   const data = genre
     ? await getDiscoverMovies(genre, currentPage)
     : await getSearch(searchValue, currentPage);
 
   const results = data?.results ?? [];
   const totalPages = data?.total_pages ?? 1;
-
 
   const withQuery = (p: number) => {
     const sp = new URLSearchParams();
@@ -47,7 +45,6 @@ export default async function Page({ searchParams }: PageProps) {
     return `?${sp.toString()}`;
   };
 
- 
   if (!genre && !searchValue.trim()) {
     return (
       <div className="mx-auto mt-10 max-w-7xl px-6 text-center">
@@ -65,9 +62,7 @@ export default async function Page({ searchParams }: PageProps) {
     <div className="mx-auto mt-10 max-w-7xl px-6">
       <div className="flex justify-between mb-4 mx-8 items-center">
         <p className="font-semibold">
-          {genre
-            ? "Movies by Genre"
-            : `Search results for "${searchValue}"`}
+          {genre ? "Movies by Genre" : `Search results for "${searchValue}"`}
         </p>
       </div>
 
@@ -87,7 +82,7 @@ export default async function Page({ searchParams }: PageProps) {
 
         {/* Genre Sidebar */}
         <div className="mt-10 w-[280px] shrink-0">
-          <Genres />
+          <GenresList />
         </div>
       </div>
 

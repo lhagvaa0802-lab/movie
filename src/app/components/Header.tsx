@@ -43,19 +43,10 @@ const GENRES = [
 export const Header = () => {
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 
-  // ✅ keep active highlight in header
-  const [genreId, setGenreId] = useQueryState(
+  const [genreId] = useQueryState(
     "genre",
     parseAsInteger.withOptions({ shallow: false }),
   );
-
-  const [, setPage] = useQueryState(
-    "page",
-    parseAsInteger.withDefault(1).withOptions({ shallow: false }),
-  );
-
-  // optional: if you want genre click to exit search mode
-  const [, setQuery] = useQueryState("query", { shallow: false } as any);
 
   return (
     <div className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur dark:border-zinc-800 dark:bg-black/60">
@@ -91,27 +82,32 @@ export const Header = () => {
 
                 {/* ✅ DESKTOP GENRES */}
                 <div className="grid grid-cols-2 gap-2 mt-5">
-                  {GENRES.map((g) => (
-                    <DropdownMenuItem key={g.id} asChild className="p-0">
-                      <Link
-                        href={`/SeeMoreSearch?genre=${g.id}&page=1`}
-                        className="block w-full"
-                        onClick={() => {
-                          setGenreId(g.id);
-                          setPage(1);
-                          setQuery(null);
-                        }}
+                  {GENRES.map((g) => {
+                    const a = () => {
+                      console.log("ok");
+                    };
+                    return (
+                      <DropdownMenuItem
+                        key={g.id}
+                        asChild
+                        className="p-0"
+                        onClick={a}
                       >
-                        <Badge
-                          variant={genreId === g.id ? "default" : "outline"}
-                          className="w-full cursor-pointer flex items-center justify-between"
+                        <Link
+                          href={`/SeeMoreSearch?genre=${g.id}&page=1`}
+                          className="block w-full"
                         >
-                          {g.name}
-                          <ChevronRight className="h-4 w-4" />
-                        </Badge>
-                      </Link>
-                    </DropdownMenuItem>
-                  ))}
+                          <Badge
+                            variant={genreId === g.id ? "default" : "outline"}
+                            className="w-full cursor-pointer flex items-center justify-between"
+                          >
+                            {g.name}
+                            <ChevronRight className="h-4 w-4" />
+                          </Badge>
+                        </Link>
+                      </DropdownMenuItem>
+                    );
+                  })}
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -171,12 +167,6 @@ export const Header = () => {
                         <Link
                           href={`/SeeMoreSearch?genre=${g.id}&page=1`}
                           className="block w-full"
-                          onClick={() => {
-                            setGenreId(g.id);
-                            setPage(1);
-                            setQuery(null);
-                            setMobileSearchOpen(false);
-                          }}
                         >
                           <Badge
                             variant={genreId === g.id ? "default" : "outline"}

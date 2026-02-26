@@ -3,6 +3,9 @@
 import { ChevronRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useQueryState, parseAsInteger } from "nuqs";
+import { Genre } from "@/lib/types";
+import { getGenre } from "@/lib/apiGenre";
+import { useEffect } from "react";
 
 const GENRES = [
   { id: 28, name: "Action" },
@@ -26,13 +29,15 @@ const GENRES = [
   { id: 37, name: "Western" },
 ];
 
-export const Genres = () => {
- const [genreId, setGenreId] = useQueryState(
-   "genre",
-   parseAsInteger.withOptions({ shallow: false }),
- );
+export const GenresList = async () => {
+  // const { genres } = await getGenre();
+
+  const [genreId, setGenreId] = useQueryState(
+    "genre",
+    parseAsInteger.withOptions({ shallow: false }),
+  );
   const [, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
-  const [, setQuery] = useQueryState("query"); 
+  const [, setQuery] = useQueryState("query");
 
   const onSelectGenre = (id: number) => {
     const next = genreId === id ? null : id;
@@ -40,7 +45,6 @@ export const Genres = () => {
     setGenreId(next);
     setPage(1);
 
-   
     setQuery(null);
   };
 

@@ -52,11 +52,14 @@ export interface MovieDetails {
   vote_count: number;
 }
 
+export interface Genres {
+  genres: Genre[];
+}
+
 export interface Genre {
   id: number;
   name: string;
 }
-
 export interface ProductionCompany {
   id: number;
   logo_path?: string;
@@ -110,14 +113,10 @@ export interface Crew {
   job: string;
 }
 
-
-
-
 export interface VideoResponse {
   id: number;
   results: VideoItem[];
 }
-
 
 export interface VideoItem {
   iso_639_1: string;
@@ -131,5 +130,3 @@ export interface VideoItem {
   published_at: string;
   id: string;
 }
-
-
