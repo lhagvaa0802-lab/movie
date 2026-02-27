@@ -1,7 +1,6 @@
 import type { Genres, Genre } from "./types";
 import { options } from "./tmdb";
 
-
 const token = process.env.TMDB_ACCESS_TOKEN;
 
 export const getGenre = async (): Promise<Genre[]> => {
@@ -12,5 +11,5 @@ export const getGenre = async (): Promise<Genre[]> => {
 
   const data: Genres = await response.json();
 
-  return data.genres; // ✅ return array only
+  return data.genres;
 };

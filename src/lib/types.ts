@@ -60,6 +60,7 @@ export interface Genre {
   id: number;
   name: string;
 }
+
 export interface ProductionCompany {
   id: number;
   logo_path?: string;
@@ -78,6 +79,7 @@ export interface SpokenLanguage {
   name: string;
 }
 
+// MovieDetails API
 export interface MovieCredits {
   id: number;
   cast: Cast[];
@@ -112,6 +114,8 @@ export interface Crew {
   department: string;
   job: string;
 }
+
+// video API
 
 export interface VideoResponse {
   id: number;
