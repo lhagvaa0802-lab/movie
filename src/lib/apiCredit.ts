@@ -2,8 +2,6 @@ import { MovieCredits } from "./types";
 import { options } from "./tmdb";
 import { FetchMovieDataType } from "@/lib/types";
 
-
-
 export const getCreditsMovies = async (
   movieId: string,
 ): Promise<MovieCredits> => {

@@ -17,7 +17,7 @@ type PopularMoviesProps = {
   searchParams: Promise<{ page: string | undefined }>;
 };
 
-export default async function PopularMovies({
+export default async function UpcomingMovies({
   searchParams,
 }: PopularMoviesProps) {
   const { page } = await searchParams;

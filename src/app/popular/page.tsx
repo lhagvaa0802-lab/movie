@@ -20,7 +20,7 @@ export default async function PopularMovies({
   searchParams,
 }: PopularMoviesProps) {
   const { page } = await searchParams;
-  console.log("page ", page);
+
   const popularMoviesData: FetchMovieDataType = await getPopularMovies(page);
   const { total_pages } = await getPopularMovies(page);
   const pages = Array(total_pages)

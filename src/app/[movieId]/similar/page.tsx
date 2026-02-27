@@ -22,12 +22,10 @@ export default async function Page({ params, searchParams }: Props) {
 
   const currentPage = Math.max(1, Number(sp.page ?? 1) || 1);
 
-  // ✅ make sure your getSimilarMovie supports (movieId, page)
   const data = await getSimilarMovie(movieId, currentPage);
 
   const results = data?.results ?? [];
 
-  // ✅ TMDB max page is 500
   const rawTotalPages = data?.total_pages ?? 1;
   const totalPages = Math.min(rawTotalPages, 500);
 

@@ -17,7 +17,7 @@ type PopularMoviesProps = {
   searchParams: Promise<{ page: string | undefined }>;
 };
 
-export default async function PopularMovies({
+export default async function TopRatedMovies({
   searchParams,
 }: PopularMoviesProps) {
   const { page } = await searchParams;
@@ -47,7 +47,7 @@ export default async function PopularMovies({
           <PaginationContent>
             {Number(page) > 1 && (
               <PaginationItem>
-                <PaginationPrevious href={`?page=${Number(page ?? 1) - 1}`} />
+                <PaginationPrevious href={`?page=${Number(page) - 1}`} />
               </PaginationItem>
             )}
 
@@ -78,7 +78,7 @@ export default async function PopularMovies({
             })}
 
             <PaginationItem>
-              <PaginationNext href={`?page=${Number(page) + 1}`} />
+              <PaginationNext href={`?page=${Number(page ?? 1) + 1}`} />
             </PaginationItem>
           </PaginationContent>
         </Pagination>

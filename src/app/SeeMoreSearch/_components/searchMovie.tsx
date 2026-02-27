@@ -166,8 +166,6 @@ export const SearchInput = () => {
               })}
           </div>
 
-          {/* ✅ Footer: See all results (passes query + closes dropdown automatically via pathname effect) */}
-
           {!loading && (
             <div className="border-t px-5 py-4">
               <Link

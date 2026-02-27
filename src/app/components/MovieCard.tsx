@@ -1,7 +1,6 @@
 import { Card, CardFooter } from "@/components/ui/card";
 import { Star } from "lucide-react";
 
-
 type MovieCardProps = {
   imgPath: string;
   rating: number;
@@ -9,15 +8,15 @@ type MovieCardProps = {
 };
 const baseImgUrl = "https://image.tmdb.org/t/p/w500";
 export const MovieCard = (props: MovieCardProps) => {
-  const { imgPath, rating, name} = props;
-  console.log(imgPath);
+  const { imgPath, rating, name } = props;
+
   return (
-    <Card className="w-[160px] bg-gray-200 text-black overflow-hidden p-0 gap-1">
+    <Card className="w-40 bg-gray-200 text-black overflow-hidden p-0 gap-1">
       <div
         style={{
           backgroundImage: `url(${`${baseImgUrl + imgPath}`})`,
         }}
-        className="relative h-[233px] bg-cover"
+        className="relative h-58.25 bg-cover"
       ></div>
 
       <CardFooter className="flex flex-col items-start gap-1 ml-0 px-2">

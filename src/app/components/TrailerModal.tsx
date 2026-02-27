@@ -18,7 +18,6 @@ export const TrailerModal = ({ videoKey, children }: TrailerModalProps) => {
 
   return (
     <>
-      {/* 👇 ONE BUTTON */}
       <button
         onClick={(e) => {
           e.preventDefault();
