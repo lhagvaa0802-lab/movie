@@ -2,35 +2,29 @@ import { MovieCard } from "../components/MovieCard";
 import Link from "next/link";
 import { getTopRatedMovies } from "@/lib/apiPages";
 import { FetchMovieDataType } from "@/lib/types";
+import PaginationBar from "../components/PagintaionBar";
 
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-
-type PopularMoviesProps = {
-  searchParams: Promise<{ page: string | undefined }>;
+type TopRatedMoviesProps = {
+  searchParams: Promise<{ page?: string }>;
 };
 
-export default async function TopRatedMovies({
-  searchParams,
-}: PopularMoviesProps) {
+export default async function TopRatedMovies({ searchParams }: TopRatedMoviesProps) {
   const { page } = await searchParams;
-  const topRatedMoviesData: FetchMovieDataType = await getTopRatedMovies(page);
-  const { total_pages } = await getTopRatedMovies(page);
-  const pages = Array(total_pages)
-    .fill(0)
-    .map((_, index) => index + 1);
+
+  const currentPage = Math.max(1, Number(page ?? 1) || 1);
+
+  const topRatedMoviesData: FetchMovieDataType =
+    await getTopRatedMovies(currentPage);
+  const totalPages = Math.min(topRatedMoviesData?.total_pages ?? 1, 500);
+
+  const hrefForPage = (p: number) => `?page=${p}`;
+
   return (
     <div className="mx-auto mt-10 max-w-7xl px-6 ">
       <div className="flex justify-between mb-4 mx-8 items-center">
         <p className="font-semibold">Toprated</p>
       </div>
+
       <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-5 place-items-center mt-10">
         {topRatedMoviesData.results.slice(0, 10).map((movie) => (
           <Link href={`/${movie.id}`} key={movie.id}>
@@ -42,47 +36,12 @@ export default async function TopRatedMovies({
           </Link>
         ))}
       </div>
-      <div className="mt-10">
-        <Pagination>
-          <PaginationContent>
-            {Number(page) > 1 && (
-              <PaginationItem>
-                <PaginationPrevious href={`?page=${Number(page) - 1}`} />
-              </PaginationItem>
-            )}
 
-            {Number(page) > 3 && (
-              <>
-                <PaginationItem>
-                  <PaginationLink href="?page=1">1</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationEllipsis />
-                </PaginationItem>
-              </>
-            )}
-
-            {pages.map((pageNum, index) => {
-              const current = Number(page) || 1;
-              const p = Number(pageNum);
-
-              if (p < current - 2 || p > current + 2) return null;
-
-              return (
-                <PaginationItem key={index}>
-                  <PaginationLink href={`?page=${p}`} isActive={p === current}>
-                    {p}
-                  </PaginationLink>
-                </PaginationItem>
-              );
-            })}
-
-            <PaginationItem>
-              <PaginationNext href={`?page=${Number(page ?? 1) + 1}`} />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </div>
+      <PaginationBar
+        currentPage={currentPage}
+        totalPages={totalPages}
+        hrefForPage={hrefForPage}
+      />
     </div>
   );
 }

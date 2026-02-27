@@ -8,14 +8,14 @@ import { SeeMore } from "../components/SeeMore";
 import { Types } from "@/lib/types";
 import { Trailer } from "../components/trailer";
 
-type Detailspageprops = {
+type DetailsPageProps = {
   className: string;
   params: Promise<{ movieId: string }>;
 };
 
 const baseImgUrl = "https://image.tmdb.org/t/p/w500";
 
-const Details = async ({ params, className }: Detailspageprops) => {
+const Details = async ({ params, className }: DetailsPageProps) => {
   const { movieId } = await params;
 
   const movie = await getDetailsMovies(movieId);
@@ -84,7 +84,7 @@ const Details = async ({ params, className }: Detailspageprops) => {
 
           <div className="col-span-12 sm:col-span-8">
             <div className="relative h-[240px] sm:h-[428px] overflow-hidden rounded-lg">
-            <div className="absolute inset-0 bg-black/40" />
+              <div className="absolute inset-0 bg-black/40" />
 
               <div className="absolute inset-0 flex items-center justify-center">
                 <Trailer movieId={movieId} />

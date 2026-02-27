@@ -1,15 +1,7 @@
 import Link from "next/link";
 import { getSimilarMovie } from "@/lib/apiCredit";
 import { MovieCard } from "@/app/components/MovieCard";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+import PaginationBar from "@/app/components/PagintaionBar";
 
 type Props = {
   params: Promise<{ movieId: string }>;
@@ -27,9 +19,12 @@ export default async function Page({ params, searchParams }: Props) {
   const results = data?.results ?? [];
 
   const rawTotalPages = data?.total_pages ?? 1;
-  const totalPages = Math.min(rawTotalPages, 500);
+ 
+     const totalPages = Math.min(data?.total_pages ?? 1, 500);
 
-  const withPage = (p: number) => `?page=${p}`;
+     const hrefForPage = (p: number) => `?page=${p}`;
+
+ 
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   return (
@@ -50,61 +45,12 @@ export default async function Page({ params, searchParams }: Props) {
 
       {totalPages > 1 && (
         <div className="mt-10 flex justify-center">
-          <Pagination>
-            <PaginationContent>
-              {currentPage > 1 && (
-                <PaginationItem>
-                  <PaginationPrevious href={withPage(currentPage - 1)} />
-                </PaginationItem>
-              )}
-
-              {currentPage > 3 && (
-                <>
-                  <PaginationItem>
-                    <PaginationLink href={withPage(1)}>1</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationEllipsis />
-                  </PaginationItem>
-                </>
-              )}
-
-              {pages.map((pageNum) => {
-                if (pageNum < currentPage - 2) return null;
-                if (pageNum > currentPage + 2) return null;
-
-                return (
-                  <PaginationItem key={pageNum}>
-                    <PaginationLink
-                      href={withPage(pageNum)}
-                      isActive={pageNum === currentPage}
-                    >
-                      {pageNum}
-                    </PaginationLink>
-                  </PaginationItem>
-                );
-              })}
-
-              {currentPage < totalPages - 2 && (
-                <>
-                  <PaginationItem>
-                    <PaginationEllipsis />
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href={withPage(totalPages)}>
-                      {totalPages}
-                    </PaginationLink>
-                  </PaginationItem>
-                </>
-              )}
-
-              {currentPage < totalPages && (
-                <PaginationItem>
-                  <PaginationNext href={withPage(currentPage + 1)} />
-                </PaginationItem>
-              )}
-            </PaginationContent>
-          </Pagination>
+            <PaginationBar
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  hrefForPage={hrefForPage}
+                />
+       
         </div>
       )}
     </div>
