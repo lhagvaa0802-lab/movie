@@ -1,8 +1,8 @@
-import { MovieCard } from "../components/MovieCard";
+import { MovieCard } from "../Components/MovieCard";
 import Link from "next/link";
 import { getTopRatedMovies } from "@/lib/apiPages";
 import { FetchMovieDataType } from "@/lib/types";
-import PaginationBar from "../components/PagintaionBar";
+import PaginationBar from "../Components/PagintaionBar";
 
 type TopRatedMoviesProps = {
   searchParams: Promise<{ page?: string }>;

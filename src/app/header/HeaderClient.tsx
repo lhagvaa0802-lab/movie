@@ -3,11 +3,11 @@
 import { useState } from "react";
 import { Film, Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ModeToggle } from "../components/ModeToggle";
+import { ModeToggle } from "../Components/ModeToggle";
 import { SearchInput } from "../SeeMoreSearch/_components/searchMovie";
 import type { Genre } from "@/lib/types";
 
-import { GenresDropdown } from "../components/GenresDropdwon"; 
+import { GenresDropdown } from "../Components/GenresDropdwon"; 
 
 export const HeaderClient = ({ genres }: { genres: Genre[] }) => {
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
