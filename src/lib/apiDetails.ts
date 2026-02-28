@@ -1,14 +1,11 @@
-import { MovieDetails } from "@/lib/types";
-import { options } from "./tmdb";
 
+import { MovieDetails } from "@/lib/types";
+import { tmdbFetch } from "./tmdb";
 
 export const getDetailsMovies = async (
   movieId: string,
 ): Promise<MovieDetails> => {
-  const response = await fetch(
-    `https://api.themoviedb.org/3/movie/${movieId}?language=en-US`,
-    options,
-  );
-  const data = await response.json();
-  return data;
+  if (!movieId) throw new Error("movieId missing");
+
+  return tmdbFetch(`/movie/${movieId}?language=en-US`);
 };

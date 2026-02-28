@@ -1,15 +1,9 @@
-import type { Genres, Genre } from "./types";
-import { options } from "./tmdb";
 
-const token = process.env.TMDB_ACCESS_TOKEN;
+import type { Genres, Genre } from "./types";
+import { tmdbFetch } from "./tmdb";
 
 export const getGenre = async (): Promise<Genre[]> => {
-  const response = await fetch(
-    "https://api.themoviedb.org/3/genre/movie/list?language=en-US",
-    options,
-  );
+  const data: Genres = await tmdbFetch("/genre/movie/list?language=en-US");
 
-  const data: Genres = await response.json();
-
-  return data.genres;
+  return data.genres ?? [];
 };

@@ -67,7 +67,7 @@ export function GenresDropdown({
         <DropdownMenuSeparator />
 
         <div className="mt-5 grid grid-cols-2 gap-2">
-          {genres.map((g) => (
+          {(genres ?? []).map((g) => (
             <DropdownMenuItem key={g.id} asChild className="p-0">
               <Link
                 href={`/SeeMoreSearch?genre=${g.id}&page=1`}
