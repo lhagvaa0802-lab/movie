@@ -21,7 +21,7 @@ export function MovieHero({
   return (
     <div className="w-full">
       <div className="relative overflow-hidden dark:bg-zinc-950 lg:bg-transparent">
-        {/* IMAGE */}
+      
         <div
           className="relative h-55 sm:h-80 lg:h-130 xl:h-150 bg-cover bg-center"
           style={{
