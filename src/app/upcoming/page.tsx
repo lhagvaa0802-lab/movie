@@ -1,8 +1,8 @@
-import { MovieCard } from "../Components/MovieCard";
+import { MovieCard } from "../components/MovieCard";
 import Link from "next/link";
 import { getUpcomingMovies } from "@/lib/apiPages";
 import { FetchMovieDataType } from "@/lib/types";
-import PaginationBar from "../Components/PagintaionBar";
+import PaginationBar from "../components/PagintaionBar";
 
 
 type UpcomingMoviesProps = {

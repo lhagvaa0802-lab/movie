@@ -1,6 +1,6 @@
 import { Card, CardFooter } from "@/components/ui/card";
 import { Star } from "lucide-react";
-import { WatchCinebyButton } from "@/app/Components/WatchCinebyButton"; // adjust path
+import { WatchCinebyButton } from "@/app/components/WatchCinebyButton"; // adjust path
 
 type MovieCardProps = {
  

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getSimilarMovie } from "@/lib/apiCredit";
-import { MovieCard } from "@/app/Components/MovieCard";
-import PaginationBar from "@/app/Components/PagintaionBar";
+import { MovieCard } from "@/app/components/MovieCard";
+import PaginationBar from "@/app/components/PagintaionBar";
 
 type Props = {
   params: Promise<{ movieId: string }>;

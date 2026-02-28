@@ -1,8 +1,8 @@
-import { MovieCard } from "../Components/MovieCard";
+import { MovieCard } from "../components/MovieCard";
 import Link from "next/link";
 
 import { getSearch, getDiscoverMovies } from "@/lib/apiSerach";
-import PaginationBar from "../Components/PagintaionBar";
+import PaginationBar from "../components/PagintaionBar";
 
 import {
   Pagination,

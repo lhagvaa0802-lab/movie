@@ -1,7 +1,7 @@
-import { Popular } from "./Components/Popular";
-import { TopRated } from "./Components/TopRated";
-import { Upcoming } from "./Components/Upcoming";
-import { CarouselHero } from "./Components/CarouselHero";
+import { Popular } from "./components/Popular";
+import { TopRated } from "./components/TopRated";
+import { Upcoming } from "./components/Upcoming";
+import { CarouselHero } from "./components/CarouselHero";
 
 export default function Home() {
   return (

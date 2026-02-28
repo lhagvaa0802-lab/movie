@@ -3,11 +3,11 @@ import { Play } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { getCreditsMovies, getSimilarMovie } from "@/lib/apiCredit";
 import Link from "next/link";
-import { MovieCard } from "../Components/MovieCard";
-import { SeeMore } from "../Components/SeeMore";
+import { MovieCard } from "../components/MovieCard";
+import { SeeMore } from "../components/SeeMore";
 import { Types } from "@/lib/types";
-import { Trailer } from "../Components/trailer";
-import { WatchCinebyButton } from "../Components/WatchCinebyButton";
+import { Trailer } from "../components/trailer";
+import { WatchCinebyButton } from "../components/WatchCinebyButton";
 
 type DetailsPageProps = {
   className: string;
