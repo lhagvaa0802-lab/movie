@@ -7,6 +7,7 @@ import { MovieCard } from "../components/MovieCard";
 import { SeeMore } from "../components/SeeMore";
 import { Types } from "@/lib/types";
 import { Trailer } from "../components/trailer";
+import { WatchCinebyButton } from "../components/WatchCinebyButton";
 
 type DetailsPageProps = {
   className: string;
@@ -90,6 +91,9 @@ const Details = async ({ params, className }: DetailsPageProps) => {
                 <Trailer movieId={movieId} />
               </div>
             </div>
+          </div>
+          <div>
+            <WatchCinebyButton movieId={movie.id} />
           </div>
         </div>
 

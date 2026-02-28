@@ -35,6 +35,7 @@ export default async function UpcomigMovies({
               imgPath={movie.poster_path}
               rating={movie.vote_average}
               name={movie.original_title}
+              
             />
           </Link>
         ))}

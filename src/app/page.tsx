@@ -10,6 +10,7 @@ export default function Home() {
       <Upcoming className="visible" />
       <TopRated className="visible" />
       <Popular className="visible" />
+      
     </div>
   );
 }

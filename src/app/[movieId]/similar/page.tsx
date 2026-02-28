@@ -35,9 +35,10 @@ export default async function Page({ params, searchParams }: Props) {
         {results.map((m: any) => (
           <Link key={m.id} href={`/${m.id}`}>
             <MovieCard
-              imgPath={m.poster_path ?? "/no-image.png"}
+              
+              imgPath={m.poster_path}
               rating={m.vote_average}
-              name={m.original_title ?? m.title}
+              name={m.title}
             />
           </Link>
         ))}
@@ -45,12 +46,11 @@ export default async function Page({ params, searchParams }: Props) {
 
       {totalPages > 1 && (
         <div className="mt-10 flex justify-center">
-            <PaginationBar
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  hrefForPage={hrefForPage}
-                />
-       
+          <PaginationBar
+            currentPage={currentPage}
+            totalPages={totalPages}
+            hrefForPage={hrefForPage}
+          />
         </div>
       )}
     </div>
