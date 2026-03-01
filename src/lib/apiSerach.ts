@@ -12,17 +12,18 @@ export const getSearch = async (
 ): Promise<FetchMovieDataType> => {
   const makePath = (p: number) => {
     const safePage = clampPage(p);
-    const sp = new URLSearchParams();
-    sp.set("query", searchValue);
-    sp.set("language", "en-US");
-    sp.set("page", String(safePage));
-    return `/search/movie?${sp.toString()}`;
+    const NewUrl = new URLSearchParams({
+    query: searchValue,
+    language: "en-US",
+    page: String(safePage),
+  });
+    return `/search/movie?${NewUrl.toString()}`;
   };
 
   try {
     return await tmdbFetch(makePath(page));
   } catch (e: any) {
-    // ✅ if last page fails, retry with page-1
+   
     const msg = String(e?.message ?? "");
     if (
       page > 1 &&
@@ -43,11 +44,13 @@ export const getDiscoverMovies = async (
 ): Promise<FetchMovieDataType> => {
   const safePage = clampPage(Number(page) || 1);
 
-  const sp = new URLSearchParams();
-  sp.set("language", "en-US");
-  sp.set("page", String(safePage));
-  if (genreId) sp.set("with_genres", genreId);
+   const NewUrlforDis = new URLSearchParams({
+     language: "en-US",
+     page: String(safePage),
+   });
+  if (genreId) NewUrlforDis.set("with_genres", genreId);
 
   // tmdbFetch already throws with TMDB status + text
-  return tmdbFetch(`/discover/movie?${sp.toString()}`);
+  return tmdbFetch(`/discover/movie?${NewUrlforDis.toString()}`);
 };
+    
