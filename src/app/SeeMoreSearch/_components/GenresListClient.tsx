@@ -1,11 +1,20 @@
 "use client";
 
+import { Suspense } from "react";
 import { useQueryState, parseAsInteger } from "nuqs";
 import { useRouter } from "next/navigation";
 import { Genres } from "./Genres";
 import type { Genre } from "@/lib/types";
 
 export function GenresListClient({ genres }: { genres: Genre[] }) {
+  return (
+    <Suspense fallback={null}>
+      <GenresListClientInner genres={genres} />
+    </Suspense>
+  );
+}
+
+function GenresListClientInner({ genres }: { genres: Genre[] }) {
   const router = useRouter();
 
   const [genreId, setGenreId] = useQueryState(
@@ -19,11 +28,11 @@ export function GenresListClient({ genres }: { genres: Genre[] }) {
   const onSelectGenre = async (id: number) => {
     const next = genreId === id ? null : id;
 
-    await setGenreId(next); 
+    await setGenreId(next);
     await setPage(1);
     await setQuery(null);
 
-    router.refresh(); 
+    router.refresh();
   };
 
   return (

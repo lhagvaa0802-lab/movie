@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Pagination,
   PaginationContent,
@@ -7,17 +9,23 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+
 type PaginationBarProps = {
   currentPage: number;
   totalPages: number;
-  hrefForPage: (p: number) => string;
+  baseQuery: string; // ✅ string, not a function
 };
+
 export default function PaginationBar({
   currentPage,
   totalPages,
-  hrefForPage,
+  baseQuery,
 }: PaginationBarProps) {
   if (totalPages <= 1) return null;
+
+  const hrefForPage = (p: number) =>
+    baseQuery ? `?${baseQuery}&page=${p}` : `?page=${p}`;
+
   return (
     <div className="mt-10 flex justify-center">
       <Pagination>
@@ -27,6 +35,7 @@ export default function PaginationBar({
               <PaginationPrevious href={hrefForPage(currentPage - 1)} />
             </PaginationItem>
           )}
+
           {currentPage > 3 && (
             <>
               <PaginationItem>
@@ -39,6 +48,7 @@ export default function PaginationBar({
               </PaginationItem>
             </>
           )}
+
           {Array.from({ length: 5 }, (_, i) => currentPage - 2 + i).map(
             (pageNum) => {
               if (pageNum < 1 || pageNum > totalPages) return null;
@@ -55,6 +65,7 @@ export default function PaginationBar({
               );
             },
           )}
+
           {currentPage < totalPages - 2 && (
             <>
               <PaginationItem>
@@ -70,6 +81,7 @@ export default function PaginationBar({
               </PaginationItem>
             </>
           )}
+
           {currentPage < totalPages && (
             <PaginationItem>
               <PaginationNext href={hrefForPage(currentPage + 1)} />

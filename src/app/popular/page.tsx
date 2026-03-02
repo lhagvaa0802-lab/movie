@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getPopularMovies } from "@/lib/apiPages";
 import { FetchMovieDataType } from "@/lib/types";
 import PaginationBar from "../components/PagintaionBar";
+import { Suspense } from "react";
 
 type PopularMoviesProps = {
   searchParams: Promise<{ page: string | undefined }>;
@@ -17,9 +18,10 @@ export default async function PopularMovies({
 
   const popularMoviesData: FetchMovieDataType =
     await getPopularMovies(currentPage);
-   const totalPages = Math.min(popularMoviesData?.total_pages ?? 1, 500);
+  const totalPages = Math.min(popularMoviesData?.total_pages ?? 1, 500);
 
-  const hrefForPage = (p: number) => `?page=${p}`;
+  // ✅ serializable (server -> client ok)
+  const baseQuery = "";
 
   return (
     <div className="mx-auto mt-10 max-w-7xl px-6 ">
@@ -34,17 +36,22 @@ export default async function PopularMovies({
               imgPath={movie.poster_path}
               rating={movie.vote_average}
               name={movie.original_title}
-              
             />
           </Link>
         ))}
       </div>
 
-      <PaginationBar
-        currentPage={currentPage}
-        totalPages={totalPages}
-        hrefForPage={hrefForPage}
-      />
+      {totalPages > 1 && (
+        <div className="mt-10 flex justify-center">
+          <Suspense fallback={null}>
+            <PaginationBar
+              currentPage={currentPage}
+              totalPages={totalPages}
+              baseQuery={baseQuery}
+            />
+          </Suspense>
+        </div>
+      )}
     </div>
   );
 }

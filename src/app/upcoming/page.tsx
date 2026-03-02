@@ -3,7 +3,7 @@ import Link from "next/link";
 import { getUpcomingMovies } from "@/lib/apiPages";
 import { FetchMovieDataType } from "@/lib/types";
 import PaginationBar from "../components/PagintaionBar";
-
+import { Suspense } from "react";
 
 type UpcomingMoviesProps = {
   searchParams: Promise<{ page: string | undefined }>;
@@ -18,9 +18,10 @@ export default async function UpcomigMovies({
 
   const upcomingMoviesData: FetchMovieDataType =
     await getUpcomingMovies(currentPage);
-   const totalPages = Math.min(upcomingMoviesData?.total_pages ?? 1, 500);
+  const totalPages = Math.min(upcomingMoviesData?.total_pages ?? 1, 500);
 
-  const hrefForPage = (p: number) => `?page=${p}`;
+  // ✅ server -> client safe
+  const baseQuery = "";
 
   return (
     <div className="mx-auto mt-10 max-w-7xl px-6 ">
@@ -35,17 +36,22 @@ export default async function UpcomigMovies({
               imgPath={movie.poster_path}
               rating={movie.vote_average}
               name={movie.original_title}
-              
             />
           </Link>
         ))}
       </div>
 
-      <PaginationBar
-        currentPage={currentPage}
-        totalPages={totalPages}
-        hrefForPage={hrefForPage}
-      />
+      {totalPages > 1 && (
+        <div className="mt-10 flex justify-center">
+          <Suspense fallback={null}>
+            <PaginationBar
+              currentPage={currentPage}
+              totalPages={totalPages}
+              baseQuery={baseQuery}
+            />
+          </Suspense>
+        </div>
+      )}
     </div>
   );
 }

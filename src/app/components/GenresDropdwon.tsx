@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import Link from "next/link";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -17,15 +18,22 @@ import type { Genre } from "@/lib/types";
 
 type Props = {
   genres: Genre[];
-  /** default: "Genre" */
   label?: string;
-  /** if true -> icon button (mobile), else normal button (desktop) */
   iconOnly?: boolean;
-  /** dropdown width (Tailwind), default matches your current usage */
   contentClassName?: string;
 };
 
-export function GenresDropdown({
+// ✅ wrapper adds Suspense boundary
+export function GenresDropdown(props: Props) {
+  return (
+    <Suspense fallback={null}>
+      <GenresDropdownInner {...props} />
+    </Suspense>
+  );
+}
+
+// ✅ original component logic moved here (unchanged)
+function GenresDropdownInner({
   genres,
   label = "Genre",
   iconOnly = false,

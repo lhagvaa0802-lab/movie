@@ -1,38 +1,35 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
+import { Suspense, useEffect, useState } from "react";
 import Image from "next/image";
-
 import Link from "next/link";
-
 import { usePathname } from "next/navigation";
-
 import { Search, Star, ChevronRight, Loader2 } from "lucide-react";
-
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group";
-
 import { getSearch } from "@/lib/apiSerach";
-
 import { Types } from "@/lib/types";
 
 const baseImgUrl = "https://image.tmdb.org/t/p/w92";
 
 export const SearchInput = () => {
+  return (
+    <Suspense fallback={null}>
+      <SearchInputInner />
+    </Suspense>
+  );
+};
+
+function SearchInputInner() {
   const pathname = usePathname();
 
   const [searchValue, setSearchValue] = useState("");
-
   const [movies, setMovies] = useState<Types[]>([]);
-
   const [open, setOpen] = useState(false);
-
   const [loading, setLoading] = useState(false);
-
   const [hasSearched, setHasSearched] = useState(false);
 
   useEffect(() => {
@@ -44,13 +41,9 @@ export const SearchInput = () => {
 
     if (!q) {
       setMovies([]);
-
       setOpen(false);
-
       setLoading(false);
-
       setHasSearched(false);
-
       return;
     }
 
@@ -61,13 +54,10 @@ export const SearchInput = () => {
 
       try {
         const data = await getSearch(q);
-
         setMovies(data?.results ?? []);
-
         setHasSearched(true);
-      } catch (e) {
+      } catch {
         setMovies([]);
-
         setHasSearched(true);
       } finally {
         setLoading(false);
@@ -78,11 +68,10 @@ export const SearchInput = () => {
   }, [searchValue]);
 
   const q = searchValue.trim();
-
   const seeAllHref = `/SeeMoreSearch?query=${encodeURIComponent(q)}&page=1`;
 
   return (
-    <div className="relative w-[520px]">
+    <div className="relative w-130">
       <InputGroup className="w-full">
         <InputGroupInput
           value={searchValue}
@@ -99,7 +88,7 @@ export const SearchInput = () => {
 
       {open && q && (
         <div className="absolute left-0 top-full mt-2 w-full overflow-hidden rounded-2xl border bg-white shadow-xl z-50">
-          <div className="max-h-[520px] overflow-y-auto">
+          <div className="max-h-130 overflow-y-auto">
             {loading && (
               <div className="flex items-center justify-center gap-2 px-5 py-6 text-sm text-zinc-500">
                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -146,6 +135,7 @@ export const SearchInput = () => {
                         <div className="h-14 w-14" />
                       )}
                     </div>
+
                     <div className="min-w-0 flex-1">
                       <p className="truncate font-semibold text-zinc-900">
                         {movie.title ?? movie.original_title}
@@ -157,6 +147,7 @@ export const SearchInput = () => {
                       </div>
                       <p className="mt-1 text-sm text-zinc-500">{year}</p>
                     </div>
+
                     <div className="flex items-center gap-2 text-sm text-zinc-400">
                       <span>See more</span>
                       <ChevronRight className="h-4 w-4" />
@@ -181,4 +172,4 @@ export const SearchInput = () => {
       )}
     </div>
   );
-};
+}

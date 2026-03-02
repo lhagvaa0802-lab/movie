@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getSimilarMovie } from "@/lib/apiCredit";
 import { MovieCard } from "@/app/components/MovieCard";
 import PaginationBar from "@/app/components/PagintaionBar";
+import { Suspense } from "react";
 
 type Props = {
   params: Promise<{ movieId: string }>;
@@ -15,17 +16,12 @@ export default async function Page({ params, searchParams }: Props) {
   const currentPage = Math.max(1, Number(sp.page ?? 1) || 1);
 
   const data = await getSimilarMovie(movieId, currentPage);
-
   const results = data?.results ?? [];
 
-  const rawTotalPages = data?.total_pages ?? 1;
- 
-     const totalPages = Math.min(data?.total_pages ?? 1, 500);
+  const totalPages = Math.min(data?.total_pages ?? 1, 500);
 
-     const hrefForPage = (p: number) => `?page=${p}`;
-
- 
-  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+  // ✅ pass serializable string
+  const baseQuery = ""; // (if you later have query/genre, we can build it here)
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-8">
@@ -35,7 +31,6 @@ export default async function Page({ params, searchParams }: Props) {
         {results.map((m: any) => (
           <Link key={m.id} href={`/${m.id}`}>
             <MovieCard
-              
               imgPath={m.poster_path}
               rating={m.vote_average}
               name={m.title}
@@ -46,11 +41,13 @@ export default async function Page({ params, searchParams }: Props) {
 
       {totalPages > 1 && (
         <div className="mt-10 flex justify-center">
-          <PaginationBar
-            currentPage={currentPage}
-            totalPages={totalPages}
-            hrefForPage={hrefForPage}
-          />
+          <Suspense fallback={null}>
+            <PaginationBar
+              currentPage={currentPage}
+              totalPages={totalPages}
+              baseQuery={baseQuery}
+            />
+          </Suspense>
         </div>
       )}
     </div>

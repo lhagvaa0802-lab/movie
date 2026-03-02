@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ModeToggle } from "../components/ModeToggle";
 import { SearchInput } from "../SeeMoreSearch/_components/searchMovie";
 import type { Genre } from "@/lib/types";
-
+import { Suspense } from "react";
 import { GenresDropdown } from "../components/GenresDropdwon"; 
 
 export const HeaderClient = ({ genres }: { genres: Genre[] }) => {
@@ -28,7 +28,9 @@ export const HeaderClient = ({ genres }: { genres: Genre[] }) => {
           {/* Desktop */}
           <div className="hidden items-center gap-3 lg:flex">
             <GenresDropdown genres={genres} />
-            <SearchInput />
+            <Suspense fallback={null}>
+              <SearchInput />
+            </Suspense>
           </div>
 
           <div
@@ -56,7 +58,9 @@ export const HeaderClient = ({ genres }: { genres: Genre[] }) => {
             <div className="flex items-center gap-2">
               <GenresDropdown genres={genres} iconOnly />
 
-              <SearchInput />
+              <Suspense fallback={null}>
+                <SearchInput />
+              </Suspense>
 
               <Button
                 size="icon"

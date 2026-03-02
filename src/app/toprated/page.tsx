@@ -3,12 +3,15 @@ import Link from "next/link";
 import { getTopRatedMovies } from "@/lib/apiPages";
 import { FetchMovieDataType } from "@/lib/types";
 import PaginationBar from "../components/PagintaionBar";
+import { Suspense } from "react";
 
 type TopRatedMoviesProps = {
   searchParams: Promise<{ page?: string }>;
 };
 
-export default async function TopRatedMovies({ searchParams }: TopRatedMoviesProps) {
+export default async function TopRatedMovies({
+  searchParams,
+}: TopRatedMoviesProps) {
   const { page } = await searchParams;
 
   const currentPage = Math.max(1, Number(page ?? 1) || 1);
@@ -17,7 +20,8 @@ export default async function TopRatedMovies({ searchParams }: TopRatedMoviesPro
     await getTopRatedMovies(currentPage);
   const totalPages = Math.min(topRatedMoviesData?.total_pages ?? 1, 500);
 
-  const hrefForPage = (p: number) => `?page=${p}`;
+  // ✅ serializable (server -> client ok)
+  const baseQuery = "";
 
   return (
     <div className="mx-auto mt-10 max-w-7xl px-6 ">
@@ -32,17 +36,22 @@ export default async function TopRatedMovies({ searchParams }: TopRatedMoviesPro
               imgPath={movie.poster_path}
               rating={movie.vote_average}
               name={movie.original_title}
-             
             />
           </Link>
         ))}
       </div>
 
-      <PaginationBar
-        currentPage={currentPage}
-        totalPages={totalPages}
-        hrefForPage={hrefForPage}
-      />
+      {totalPages > 1 && (
+        <div className="mt-10 flex justify-center">
+          <Suspense fallback={null}>
+            <PaginationBar
+              currentPage={currentPage}
+              totalPages={totalPages}
+              baseQuery={baseQuery}
+            />
+          </Suspense>
+        </div>
+      )}
     </div>
   );
 }
